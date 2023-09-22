@@ -1,0 +1,143 @@
+.container {
+    position: relative;
+    display: flex;
+    width: 100vw;
+    /* padding: 20px; */
+  }
+
+  .button{
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: black;
+    color: white;
+    margin-top: 50px;
+    cursor: pointer;
+}
+
+  
+  .navigation {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: flex-start;
+    background-color: white;
+    color: white;
+    width: 15vw;
+    padding: 20px;
+    border-radius: 5px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    position: relative;
+  }
+  
+  .menuItem {
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+  }
+  
+  .content {
+    /* padding: 0 10px; */
+    display: flex;
+    background-color: black;
+    width: 55vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: white;
+    position: absolute;
+    left: 16%;
+  }
+
+  .notificationContainer{
+    position: relative;
+  }
+
+  .count{
+    width: 10px;
+    height: 10px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: rgb(40, 40, 238);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: white;
+  }
+
+  .icon{
+    color: black;
+    
+  }
+  .linkName {
+    font-size: 15px;
+    color: black;
+    margin-left: 20px;
+  }
+  
+  .menuItem {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 20px;
+    padding: 20px 10px;
+  }
+  
+  
+  
+  .chatArea {
+    background-color: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    width: 28vw;
+    height: 100vh;
+    overflow: scroll;
+  }
+  /* Hide the scrollbar, but allow scrolling */
+.chatArea {
+  overflow: scroll; /* or overflow: auto; */
+  scrollbar-width: none; /* Hide scrollbar on Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar on Internet Explorer and Edge (legacy) */
+}
+
+/* For Chrome, Safari, and newer versions of Edge */
+.chatArea::-webkit-scrollbar {
+  width: 0; /* Hide the default scrollbar */
+  height: 0;
+}
+
+/* Optional: You can style the scrollbar track and thumb if needed */
+.chatArea::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Example background color */
+}
+
+.chatArea::-webkit-scrollbar-thumb {
+  background-color: #888; /* Example thumb color */
+}
+
+.userButtonContainer{
+  display: flex;
+  color: black;
+  align-items: center;
+  padding: 10px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.fullName{
+  text-align: center;
+}
+
+.modalContainer{
+  outline: none;
+}
+
+  

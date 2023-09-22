@@ -1,0 +1,86 @@
+/* FileUpload.module.css */
+
+.upload-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px; /* Adjust the size as needed */
+    flex-direction: column;
+  }
+
+  .message{
+    padding: 20px;
+    color: white;
+  }
+  
+  .loader {
+    position: relative;
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
+  }
+  
+  .circular {
+    animation: rotate 2s linear infinite;
+    height: 100%;
+    transform-origin: center center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .path {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    stroke-linecap: round;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35px;
+    }
+    100% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124px;
+    }
+  }
+  
+  @keyframes color {
+    100%, 0% {
+      stroke: #f00;
+    }
+    40% {
+      stroke: #ff0;
+    }
+    66% {
+      stroke: #0f0;
+    }
+    80%, 90% {
+      stroke: #00f;
+    }
+  }
+  
+  .percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    color: white;
+  }
+  
