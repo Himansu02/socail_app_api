@@ -6,15 +6,15 @@ import axios from "axios";
 
 const SearchContainer = ({ clickHandler }) => {
   const [imaginaryArray, setImaginaryArray] = useState([]);
-  const [filteredArray,setFilteredArray]= useState([])
+  const [filteredArray, setFilteredArray] = useState([]);
 
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/user");
+        const res = await axios.get("https://socail-app-api.vercel.app/user");
         console.log(res);
 
-        setImaginaryArray(res.data)
+        setImaginaryArray(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -22,24 +22,23 @@ const SearchContainer = ({ clickHandler }) => {
     getUsers();
   }, []);
 
-  const handleChange=(e)=>{
-    if(e.target.value.trim().length===0)
-    {
-      setFilteredArray([])
+  const handleChange = (e) => {
+    if (e.target.value.trim().length === 0) {
+      setFilteredArray([]);
       return;
     }
-    setFilteredArray(()=>{
-      return imaginaryArray.filter((user)=>{
-        return user.username.startsWith(e.target.value)
-      })
-    })
-  }
+    setFilteredArray(() => {
+      return imaginaryArray.filter((user) => {
+        return user.username.startsWith(e.target.value);
+      });
+    });
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.inputContainer}>
         <Search fontSize="large" />
-        <input placeholder="Search" onChange={handleChange}/>
+        <input placeholder="Search" onChange={handleChange} />
       </div>
       <div className={styles.resultContainer}>
         {filteredArray.map((ele, idx) => {
@@ -62,19 +61,18 @@ const SearchContainer = ({ clickHandler }) => {
                 </div>
                 <div className={styles.userInfo}>
                   <p className={styles.displayName}>{ele.fullname}</p>
-                  <p className={styles.username}>{'@'+ele.username}</p>
+                  <p className={styles.username}>{"@" + ele.username}</p>
                 </div>
               </div>
             </Link>
           );
         })}
-        {filteredArray.length===0 &&(
+        {filteredArray.length === 0 && (
           <div className={styles.noResultContainer}>
             <p>No Search Results.</p>
-          </div> 
+          </div>
         )}
       </div>
-      
     </div>
   );
 };

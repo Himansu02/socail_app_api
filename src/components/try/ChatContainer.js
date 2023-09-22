@@ -35,7 +35,7 @@ const ChatContainer = () => {
     if (conversations.length === 0) {
       const getConversationList = async () => {
         const res = await axios.get(
-          `http://localhost:5000/conversation/${user.id}`
+          `https://socail-app-api.vercel.app/conversation/${user.id}`
         );
         dispatch(getList(res.data));
       };
@@ -83,7 +83,7 @@ const ChatContainer = () => {
             })}
           </div>
         )}
-        {conversations.length>0 && <UserList searchName={searchName} />}
+        {conversations.length > 0 && <UserList searchName={searchName} />}
       </div>
     </>
   );

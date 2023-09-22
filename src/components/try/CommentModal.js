@@ -1,113 +1,119 @@
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./CommentModal.module.css"
+import styles from "./CommentModal.module.css";
 import axios from "axios";
 import { Close, KeyboardBackspace, Send } from "@mui/icons-material";
 import CommentSection from "./CommentSection";
 import { useSelector } from "react-redux";
 
-const CommentModal = ({postId,closeModal}) => {
+const CommentModal = ({ postId, closeModal }) => {
+  const { user } = useUser();
+  const [postComments, setPostComments] = useState([]);
+  const socket = useSelector((state) => state.socket.socket);
+  const [post, setPost] = useState(null);
 
-    const {user}=useUser()
-    const [postComments,setPostComments]=useState([])
-    const socket=useSelector((state)=>state.socket.socket)
-    const [post,setPost]=useState(null)
+  const ref = useRef(null);
 
+  const handleInput = (e) => {
+    if (ref.current) {
+      ref.current.style.height = "auto";
+      ref.current.style.height = `${e.target.scrollHeight}px`;
+    }
+  };
 
-    const ref=useRef(null)
+  useEffect(() => {
+    const getPostComment = async () => {
+      try {
+        const res = await axios.get(
+          `https://socail-app-api.vercel.app/comment/${postId}`
+        );
+        setPostComments(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getPostComment();
+  }, [postId]);
 
-    const handleInput = (e) => {
-        if (ref.current) {
-          ref.current.style.height = "auto";
-          ref.current.style.height = `${e.target.scrollHeight}px`;
-        }
+  useEffect(() => {
+    if (postId) {
+      const getPostData = async () => {
+        const res = await axios.get(
+          `https://socail-app-api.vercel.app/post/${postId}`
+        );
+        setPost(res.data);
+      };
+      getPostData();
+    }
+  }, [postId]);
+
+  const handleCommentSubmit = async () => {
+    if (ref.current.value.trim().length > 0) {
+      const newComment = {
+        postId,
+        senderId: user.id,
+        receiverId: post?.postedBy.externalId,
+        text: ref.current.value,
+        likes: [],
       };
 
-      useEffect(()=>{
-        const getPostComment = async () => {
-            try {
-              const res = await axios.get(`http://localhost:5000/comment/${postId}`);
-              setPostComments(res.data);
-            } catch (err) {
-              console.log(err);
-            }
-          };
-          getPostComment();
-      },[postId])
+      try {
+        const res = await axios.post(
+          "https://socail-app-api.vercel.app/comment",
+          newComment
+        );
 
-      useEffect(() => {
-        if (postId) {
-          const getPostData = async () => {
-            const res = await axios.get(`http://localhost:5000/post/${postId}`);
-            setPost(res.data);
-          };
-          getPostData();
+        setPostComments((prev) => {
+          return [res.data, ...prev];
+        });
+
+        const notification = {
+          postId,
+          senderId: user.id,
+          externalId: post?.postedBy.externalId,
+          text: res.data.text,
+          commentId: res.data._id,
+          type: 2,
+        };
+
+        socket?.emit("sendNotification", {
+          senderId: user.id,
+          receiverId: post?.postedBy.externalId,
+          type: 2,
+          postId: postId,
+          commentId: res.data._id,
+          text: res.data.text,
+        });
+
+        try {
+          const res = await axios.post(
+            `https://socail-app-api.vercel.app/notification/`,
+            notification
+          );
+        } catch (err) {
+          console.log(err);
         }
-      }, [postId]);
 
-      const handleCommentSubmit = async () => {
-        if (ref.current.value.trim().length > 0) {
-          const newComment = {
-            postId,
-            senderId: user.id,
-            receiverId: post?.postedBy.externalId,
-            text: ref.current.value,
-            likes: [],
-          };
-    
-          try {
-            const res = await axios.post(
-              "http://localhost:5000/comment",
-              newComment
-            );
-    
-            setPostComments((prev) => {
-              return [res.data, ...prev];
-            });
-    
-            const notification = {
-              postId,
-              senderId: user.id,
-              externalId: post?.postedBy.externalId,
-              text: res.data.text,
-              commentId: res.data._id,
-              type: 2,
-            };
-    
-            socket?.emit("sendNotification", {
-              senderId: user.id,
-              receiverId: post?.postedBy.externalId,
-              type: 2,
-              postId: postId,
-              commentId: res.data._id,
-              text: res.data.text,
-            });
-    
-            try {
-              const res = await axios.post(
-                `http://localhost:5000/notification/`,
-                notification
-              );
-            } catch (err) {
-              console.log(err);
-            }
-    
-            ref.current.value = "";
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      };
-
+        ref.current.value = "";
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
 
   return (
     <div className={styles.container}>
-        <div className={styles.topContainer}>
-            <div onClick={()=>{closeModal()}} style={{cursor:"pointer"}}>
-                <KeyboardBackspace />
-            </div>
-            <h1>Post Comments</h1>
+      <div className={styles.topContainer}>
+        <div
+          onClick={() => {
+            closeModal();
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          <KeyboardBackspace />
         </div>
+        <h1>Post Comments</h1>
+      </div>
       <div className={styles.input}>
         <div className={styles.commentImgContainer}>
           <img className={styles.commentImg} src={user.imageUrl} alt="" />
@@ -125,7 +131,7 @@ const CommentModal = ({postId,closeModal}) => {
         </div>
       </div>
       <div className={styles.commentSection}>
-        <CommentSection comments={postComments} postId={postId}/>
+        <CommentSection comments={postComments} postId={postId} />
       </div>
     </div>
   );

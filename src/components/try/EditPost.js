@@ -14,7 +14,9 @@ const EditPost = ({ postId, close }) => {
   useEffect(() => {
     if (postId) {
       const getPostData = async () => {
-        const res = await axios.get(`http://localhost:5000/post/${postId}`);
+        const res = await axios.get(
+          `https://socail-app-api.vercel.app/post/${postId}`
+        );
         setPost(res.data);
         setInputText(res.data.desc);
       };
@@ -29,7 +31,7 @@ const EditPost = ({ postId, close }) => {
     }
   };
 
-  console.log(inputText)
+  console.log(inputText);
 
   const handlePostUpdate = async (images) => {
     try {
@@ -38,11 +40,11 @@ const EditPost = ({ postId, close }) => {
         image: images,
       };
       const res = await axios.put(
-        `http://localhost:5000/post/${postId}`,
+        `https://socail-app-api.vercel.app/post/${postId}`,
         updateData
       );
-      dispatch(updatePost({postId:postId,post:res.data}));
-      close()
+      dispatch(updatePost({ postId: postId, post: res.data }));
+      close();
     } catch (err) {
       console.log(err);
     }
@@ -77,7 +79,9 @@ const EditPost = ({ postId, close }) => {
           placeholder="Enter text here..."
           value={inputText}
           onInput={handleInput}
-          onChange={(e)=>{setInputText(e.target.value)}}
+          onChange={(e) => {
+            setInputText(e.target.value);
+          }}
         />
       </div>
 

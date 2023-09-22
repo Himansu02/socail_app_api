@@ -17,7 +17,9 @@ const Notification = () => {
   useEffect(() => {
     const getNotification = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/notification/${id}`);
+        const res = await axios.get(
+          `https://socail-app-api.vercel.app/notification/${id}`
+        );
         console.log(res.data);
         setNotificationArray(res.data);
       } catch (err) {

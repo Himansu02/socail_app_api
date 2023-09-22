@@ -102,7 +102,8 @@ const NewPost = ({ closeModal }) => {
 
               console.log("Upload is " + progress + "% done");
 
-              overallProgress = (uploadedFiles / totalImages) * 100 + progress / totalImages;
+              overallProgress =
+                (uploadedFiles / totalImages) * 100 + progress / totalImages;
               setUploadProgress(overallProgress);
 
               switch (snapshot.state) {
@@ -129,16 +130,22 @@ const NewPost = ({ closeModal }) => {
                   // All files have been uploaded
                   setUploadProgress(100); // Set progress to 100%
                   // Continue with your axios.post and other logic
-                  const sentPostData=async ()=>{
-                    try{
-                      const res=await axios.post("http://localhost:5000/post", postData);
+                  const sentPostData = async () => {
+                    try {
+                      const res = await axios.post(
+                        "https://socail-app-api.vercel.app/post",
+                        postData
+                      );
                       dispatch(addPost(res.data));
-                      const data=await axios.put(`http://localhost:5000/user/update/${user.id}/media`,postData.image)
-                      console.log(data.data)
-                    }catch(err){
-                      console.log(err)
+                      const data = await axios.put(
+                        `https://socail-app-api.vercel.app/user/update/${user.id}/media`,
+                        postData.image
+                      );
+                      console.log(data.data);
+                    } catch (err) {
+                      console.log(err);
                     }
-                  }
+                  };
                   sentPostData();
                   setLoad(false);
                   closeModal();
@@ -148,7 +155,10 @@ const NewPost = ({ closeModal }) => {
           );
         }
       } else {
-        const res = await axios.post("http://localhost:5000/post", postData);
+        const res = await axios.post(
+          "https://socail-app-api.vercel.app/post",
+          postData
+        );
         dispatch(addPost(res.data));
         closeModal();
       }

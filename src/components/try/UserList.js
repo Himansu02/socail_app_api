@@ -26,55 +26,55 @@ function UserList({ searchName }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-      const handleReceivedMessage =(data)=>{
-        const existingChatIndex = conversations.findIndex((conv) => {
-          console.log(conv);
-          return conv._id === data.conversationId;
-        });
+    const handleReceivedMessage = (data) => {
+      const existingChatIndex = conversations.findIndex((conv) => {
+        console.log(conv);
+        return conv._id === data.conversationId;
+      });
 
-        console.log(existingChatIndex);
+      console.log(existingChatIndex);
 
-        const receiveData = {
-          sender: data.senderId,
-          text: data.text,
-          postId: data.postId,
+      const receiveData = {
+        sender: data.senderId,
+        text: data.text,
+        postId: data.postId,
+      };
+
+      dispatch(
+        getNotificationId({
+          id: data.conversationId,
+          message: receiveData,
+        })
+      );
+
+      if (existingChatIndex !== -1) {
+        console.log("exist");
+        const updatedChatList = [...conversations];
+        const updatedChat = { ...updatedChatList[existingChatIndex] };
+        updatedChatList.splice(existingChatIndex, 1); // Remove the existing chat
+        updatedChatList.unshift(updatedChat); // Add the updated chat to the top
+
+        dispatch(getList(updatedChatList));
+      } else {
+        console.log("not");
+        const getConversation = async () => {
+          try {
+            const res = await axios.get(
+              `https://socail-app-api.vercel.app/conversation/one/${data.conversationId}`
+            );
+            dispatch(getNewConversation(res.data));
+          } catch (err) {
+            console.log(err);
+          }
         };
-
-        dispatch(
-          getNotificationId({
-            id: data.conversationId,
-            message: receiveData,
-          })
-        );
-
-        if (existingChatIndex !== -1) {
-          console.log("exist");
-          const updatedChatList = [...conversations];
-          const updatedChat = { ...updatedChatList[existingChatIndex] };
-          updatedChatList.splice(existingChatIndex, 1); // Remove the existing chat
-          updatedChatList.unshift(updatedChat); // Add the updated chat to the top
-
-          dispatch(getList(updatedChatList));
-        } else {
-          console.log("not");
-          const getConversation = async () => {
-            try {
-              const res = await axios.get(
-                `http://localhost:5000/conversation/one/${data.conversationId}`
-              );
-              dispatch(getNewConversation(res.data));
-            } catch (err) {
-              console.log(err);
-            }
-          };
-          getConversation();
-        }
+        getConversation();
       }
-      socket.on("getMessage", handleReceivedMessage);
-    
-    return ()=>{
+    };
+    socket.on("getMessage", handleReceivedMessage);
+
+    return () => {
       socket.off("getMessage", handleReceivedMessage);
-    }
+    };
   }, []);
 
   return (

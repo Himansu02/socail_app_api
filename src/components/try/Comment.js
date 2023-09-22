@@ -16,7 +16,7 @@ const Comment = ({ comment, postId }) => {
     const getUser = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/user/${comment.senderId}`
+          `https://socail-app-api.vercel.app/user/${comment.senderId}`
         );
         setUser(res.data);
         setLiked(comment.likes.includes(currentUser.id));
@@ -43,7 +43,7 @@ const Comment = ({ comment, postId }) => {
       setLiked(!liked);
       try {
         const res = await axios.put(
-          `http://localhost:5000/comment/${comment?._id}/like`,
+          `https://socail-app-api.vercel.app/comment/${comment?._id}/like`,
           {
             userId: currentUser.id,
             postId: postId,
@@ -59,7 +59,7 @@ const Comment = ({ comment, postId }) => {
       setLiked(!liked);
       try {
         const res = await axios.put(
-          `http://localhost:5000/comment/${comment?._id}/unlike`,
+          `https://socail-app-api.vercel.app/comment/${comment?._id}/unlike`,
           {
             userId: currentUser.id,
             postId: postId,

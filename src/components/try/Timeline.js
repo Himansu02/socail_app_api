@@ -14,7 +14,7 @@ function Timeline() {
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get("http://localhost:5000/post");
+      const res = await axios.get("https://socail-app-api.vercel.app/post");
       dispatch(getAllPost(res.data));
     };
     getPost();
@@ -31,7 +31,10 @@ function Timeline() {
           let tempArray = [...allPosts];
           tempArray.sort(compare);
           return tempArray.filter((obj) => {
-            return new Date(obj.createdAt) > new Date() - 24 * 60 * 60 * 1000 && obj.like.length > 0;
+            return (
+              new Date(obj.createdAt) > new Date() - 24 * 60 * 60 * 1000 &&
+              obj.like.length > 0
+            );
           });
         })();
 
@@ -43,7 +46,10 @@ function Timeline() {
             let tempArray = [...allPosts];
             tempArray.sort(compare);
             return tempArray.filter((obj) => {
-              return new Date(obj.createdAt) > new Date() - 24 * 60 * 60 * 1000 && obj.like.length > 0;
+              return (
+                new Date(obj.createdAt) > new Date() - 24 * 60 * 60 * 1000 &&
+                obj.like.length > 0
+              );
             });
           })();
   }, [allPosts]);

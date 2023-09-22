@@ -63,7 +63,7 @@ const Post = () => {
 
   useEffect(() => {
     const getAllUsers = async () => {
-      const res = await axios.get("http://localhost:5000/user");
+      const res = await axios.get("https://socail-app-api.vercel.app/user");
       setAllUsers(res.data);
     };
     getAllUsers();
@@ -72,7 +72,9 @@ const Post = () => {
   useEffect(() => {
     if (postId) {
       const getPostData = async () => {
-        const res = await axios.get(`http://localhost:5000/post/${postId}`);
+        const res = await axios.get(
+          `https://socail-app-api.vercel.app/post/${postId}`
+        );
         setPost(res.data);
         setLiked(res.data.like.includes(user.id));
         setPostLikes(res.data.like);
@@ -101,7 +103,9 @@ const Post = () => {
   useEffect(() => {
     const getPostComment = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/comment/${postId}`);
+        const res = await axios.get(
+          `https://socail-app-api.vercel.app/comment/${postId}`
+        );
         setPostComments(res.data);
       } catch (err) {
         console.log(err);
@@ -167,7 +171,7 @@ const Post = () => {
       setLiked(!liked);
       try {
         const res = await axios.put(
-          `http://localhost:5000/post/${postId}/like`,
+          `https://socail-app-api.vercel.app/post/${postId}/like`,
           { userId: user.id }
         );
       } catch (err) {
@@ -176,7 +180,7 @@ const Post = () => {
 
       try {
         const res = await axios.post(
-          `http://localhost:5000/notification`,
+          `https://socail-app-api.vercel.app/notification`,
           notification
         );
       } catch (err) {
@@ -194,14 +198,14 @@ const Post = () => {
 
       try {
         const res = await axios.put(
-          `http://localhost:5000/post/${postId}/unlike`,
+          `https://socail-app-api.vercel.app/post/${postId}/unlike`,
           { userId: user.id }
         );
       } catch (err) {}
 
       try {
         const res = await axios.delete(
-          `http://localhost:5000/notification`,
+          `https://socail-app-api.vercel.app/notification`,
           notification
         );
       } catch (err) {
@@ -226,7 +230,7 @@ const Post = () => {
 
       try {
         const res = await axios.post(
-          "http://localhost:5000/comment",
+          "https://socail-app-api.vercel.app/comment",
           newComment
         );
 
@@ -254,7 +258,7 @@ const Post = () => {
 
         try {
           const res = await axios.post(
-            `http://localhost:5000/notification/`,
+            `https://socail-app-api.vercel.app/notification/`,
             notification
           );
         } catch (err) {
@@ -272,15 +276,15 @@ const Post = () => {
   const handleMentionInput = (e) => {
     ref.current.style.height = "auto";
     ref.current.style.height = `${e.target.scrollHeight}px`;
-  
+
     const text = e.currentTarget.innerHTML;
-  
+
     // Detect "@" symbol
     const mentionIndex = text.lastIndexOf("@");
     if (mentionIndex >= 0) {
       // Show the mention dropdown and filter users for suggestions
       const mentionUsername = text.slice(mentionIndex);
-  
+
       setShowMentionDropdown(true);
       const searchText = mentionUsername.slice(1); // Remove "@" from the search text
       const filteredUsers = allUsers.filter((user) =>
@@ -291,19 +295,19 @@ const Post = () => {
       // Hide the mention dropdown
       setShowMentionDropdown(false);
     }
-  
+
     // Check if the user is trying to delete content within an <a> tag
     const selection = window.getSelection();
     const range = selection.getRangeAt(0);
-  
+
     if (range.startContainer.nodeType === Node.TEXT_NODE) {
       const parentElement = range.startContainer.parentElement;
-      
+
       // Check if the parent element is an <a> tag
       if (parentElement && parentElement.tagName.toLowerCase() === "a") {
         const textLength = parentElement.innerText.length;
         const caretPosition = range.startOffset;
-  
+
         // If caret is at the beginning or end of the <a> tag content, remove the entire <a> tag
         if (caretPosition === 0 || caretPosition === textLength) {
           e.preventDefault(); // Prevent default backspace/delete behavior
@@ -317,7 +321,7 @@ const Post = () => {
   const handleMentionSelect = (username, externalId) => {
     const text = ref.current.innerHTML;
     const mentionIndex = text.lastIndexOf("@");
-    const mentionTextWithLink =`<a className="${styles.mentionLink}" href="/profile/${externalId}">@${username}</a>`
+    const mentionTextWithLink = `<a className="${styles.mentionLink}" href="/profile/${externalId}">@${username}</a>`;
 
     const resultText = text.substring(0, mentionIndex) + mentionTextWithLink;
 

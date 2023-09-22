@@ -19,9 +19,9 @@ const Profile = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [media, setMedia] = useState([]);
 
-  const socket=useSelector((state)=>state.socket.socket)
-  
-  const dispatch=useDispatch()
+  const socket = useSelector((state) => state.socket.socket);
+
+  const dispatch = useDispatch();
 
   const openModal = (image) => {
     setSelectedImageUrl(image);
@@ -53,14 +53,16 @@ const Profile = () => {
   const joinDate = formatDate(profileUser?.createdAt);
 
   const { user } = useUser();
-  const reduxUser=useSelector((state)=>state.user.user)
+  const reduxUser = useSelector((state) => state.user.user);
   // console.log(user)
 
   const { userId } = useParams();
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/user/${userId}`);
+        const res = await axios.get(
+          `https://socail-app-api.vercel.app/user/${userId}`
+        );
 
         setProfileUser(res.data);
         setMedia(res.data.media);
@@ -75,7 +77,7 @@ const Profile = () => {
     const getTimelinePost = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/post/timeline/${userId}`
+          `https://socail-app-api.vercel.app/post/timeline/${userId}`
         );
         setUserPosts(res.data);
       } catch (err) {
@@ -85,25 +87,30 @@ const Profile = () => {
     getTimelinePost();
   }, [userId]);
 
-  const handleStartChat=async()=>{
-    try{
-      const res=await axios.post("http://localhost:5000/conversation",{senderId:user.id,receiverId:userId})
-      console.log(res.data)
-      if(res.data.status==="new")
-      {
+  const handleStartChat = async () => {
+    try {
+      const res = await axios.post(
+        "https://socail-app-api.vercel.app/conversation",
+        { senderId: user.id, receiverId: userId }
+      );
+      console.log(res.data);
+      if (res.data.status === "new") {
         const newMessage = {
           conversationId: res.data.conversation._id,
           sender: user.id,
           text: "Hi",
         };
-        dispatch(getNewConversation(res.data.conversation))
-        const data=await axios.post("http://localhost:5000/message/",newMessage)
+        dispatch(getNewConversation(res.data.conversation));
+        const data = await axios.post(
+          "https://socail-app-api.vercel.app/message/",
+          newMessage
+        );
 
         socket.emit("sendMessage", {
           senderId: user.id,
           receiverId: userId,
           text: "Hi",
-          conversationId:res.data.conversation._id,
+          conversationId: res.data.conversation._id,
         });
         dispatch(
           setOpenChart({
@@ -112,20 +119,20 @@ const Profile = () => {
             conversationUser: profileUser,
           })
         );
-      }else{
+      } else {
         dispatch(
           setOpenChart({
             openChat: true,
             id: res.data.conversation._id,
             conversationUser: profileUser,
-            conversation:res.data.conversation
+            conversation: res.data.conversation,
           })
         );
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -171,7 +178,9 @@ const Profile = () => {
                 </button>
               )}
               {user.id !== userId && (
-                <button className={styles.button} onClick={handleStartChat}>Start a Chat</button>
+                <button className={styles.button} onClick={handleStartChat}>
+                  Start a Chat
+                </button>
               )}
             </div>
             <p className={styles.userName}>{"@" + profileUser?.username}</p>

@@ -14,7 +14,7 @@ const NotificationContent = ({ notification }) => {
   useEffect(() => {
     const getSender = async () => {
       const res = await axios.get(
-        `http://localhost:5000/user/${notification.senderId}`
+        `https://socail-app-api.vercel.app/user/${notification.senderId}`
       );
       setSender(res.data);
     };
@@ -57,7 +57,8 @@ const NotificationContent = ({ notification }) => {
   return (
     <Link
       to={`/post/${notification.postId}/${
-        (notification.type === 2 || notification.type===3) && notification.commentId
+        (notification.type === 2 || notification.type === 3) &&
+        notification.commentId
       }`}
       className={styles.link}
     >

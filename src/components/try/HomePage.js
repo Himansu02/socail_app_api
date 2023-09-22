@@ -37,10 +37,11 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const [count, setCount] = useState(0);
 
-
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`http://localhost:5000/user/${user.id}`);
+      const res = await axios.get(
+        `https://socail-app-api.vercel.app/user/${user.id}`
+      );
       dispatch(getCurrentUser(res.data));
     };
     fetchUser();
@@ -52,9 +53,9 @@ const HomePage = () => {
 
   useEffect(() => {
     socket.on("getNotification", (data) => {
-      setCount((prev)=>{
-        return prev+1
-      })
+      setCount((prev) => {
+        return prev + 1;
+      });
     });
   }, []);
 
@@ -74,9 +75,9 @@ const HomePage = () => {
     setOpenSearch(true);
   };
 
-  const handleNotificationClick=()=>{
+  const handleNotificationClick = () => {
     setCount(0);
-  }
+  };
 
   const navigationLinks = [
     {
@@ -90,9 +91,16 @@ const HomePage = () => {
     {
       icon: (
         <Link to={`/notifiaction/${user.id}`}>
-          <div className={styles.notificationContainer} onClick={handleNotificationClick}>
+          <div
+            className={styles.notificationContainer}
+            onClick={handleNotificationClick}
+          >
             <Notifications className={styles.icon} fontSize="large" />
-            {count>0 && <div className={styles.count}><span>{count}</span></div>}
+            {count > 0 && (
+              <div className={styles.count}>
+                <span>{count}</span>
+              </div>
+            )}
           </div>
         </Link>
       ),

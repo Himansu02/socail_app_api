@@ -39,7 +39,7 @@ import Timeline from "./components/try/Timeline";
 import Notification from "./components/try/Notification";
 import Post from "./components/try/Post";
 import Profile from "./components/try/Profile";
-import {io} from "socket.io-client"
+import { io } from "socket.io-client";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentSocket } from "./components/try/redux/socketReducer";
@@ -49,18 +49,18 @@ const clerk_publisable_key = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-    <Route path="/sign-in" element={<SignIn />}/>
-    <Route path="/sign-up" element={<SignUp />}/>
+      <Route path="/sign-in" element={<SignIn />} />
+      <Route path="/sign-up" element={<SignUp />} />
       <Route
         path="/"
         element={
           <>
-          <SignedIn>
-            <HomePage />
-          </SignedIn>
-          <SignedOut>
-            <RedirectToSignIn/>
-          </SignedOut>
+            <SignedIn>
+              <HomePage />
+            </SignedIn>
+            <SignedOut>
+              <RedirectToSignIn />
+            </SignedOut>
           </>
         }
       >
@@ -110,16 +110,15 @@ const router = createBrowserRouter(
 );
 
 function App() {
+  const dispatch = useDispatch();
 
-  const dispatch=useDispatch()
+  useEffect(() => {
+    const socket = io("https://socail-app-api.vercel.app");
+    dispatch(getCurrentSocket(socket));
+  }, []);
 
-  useEffect(()=>{
-    const socket=io("http://localhost:5000")
-    dispatch(getCurrentSocket(socket))
-  },[])
-
-  const socket=useSelector((state)=>state.socket.socket)
-  console.log(socket)
+  const socket = useSelector((state) => state.socket.socket);
+  console.log(socket);
 
   return (
     <ClerkProvider publishableKey={clerk_publisable_key}>

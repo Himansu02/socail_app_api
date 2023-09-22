@@ -28,7 +28,10 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
     });
 
     try {
-      const res = await axios.post("http://localhost:5000/message", data);
+      const res = await axios.post(
+        "https://socail-app-api.vercel.app/message",
+        data
+      );
       if (!openChat) {
         dispatch(
           setOpenChart({
@@ -37,10 +40,8 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
             conversationUser: conversationUser,
           })
         );
-      }
-      else if(openChat && id===conversationId)
-      {
-        dispatch(getSharePost(res.data))
+      } else if (openChat && id === conversationId) {
+        dispatch(getSharePost(res.data));
       }
     } catch (err) {
       console.log(err);
@@ -51,7 +52,7 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
     const getConversationUser = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/user/${conversationUserId}`
+          `https://socail-app-api.vercel.app/user/${conversationUserId}`
         );
         setConversationUser(res.data);
       } catch (err) {
