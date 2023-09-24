@@ -5,12 +5,19 @@ import { KeyboardBackspace } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import NotificationContent from "./NotificationContent";
+import InfiniteScroll from "react-infinite-scroll-component";
+import LoadingSpinner from "../UI/LoadingSpinner";
+import Spinner from "../UI/Spinner";
 
 const Notification = () => {
   const [notificationArray, setNotificationArray] = useState([]);
+  const [hasMore, setHasMore] = useState(true); // Track if there are more posts to load
+  const [page, setPage] = useState(1); // Track the current page
   const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
 
   const socket = useSelector((state) => state.socket.socket);
+  const postsPerPage = 15;
 
   const [selectedSection, setSelectedSection] = useState("all");
 
@@ -18,16 +25,26 @@ const Notification = () => {
     const getNotification = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/notification/${id}`
+          `https://socail-app-api.vercel.app/notification/${id}?page=${page}&limit=${postsPerPage}`
         );
         console.log(res.data);
-        setNotificationArray(res.data);
+        if (res.data.length === 0) {
+          setHasMore(false); // No more posts to load
+        } else {
+          setNotificationArray((prev) => [...prev, ...res.data]);
+        }
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
     };
     getNotification();
-  }, [id]);
+  }, [page]);
+
+  const loadMore = () => {
+    console.log("called");
+    setPage(page + 1);
+  };
 
   useEffect(() => {
     socket.on("getNotification", (data) => {
@@ -45,6 +62,10 @@ const Notification = () => {
       });
     });
   }, []);
+
+  const handleNotificationDelete = async (id) => {
+    setNotificationArray((prev) => prev.filter((noti) => noti._id !== id));
+  };
 
   return (
     <div className={styles.notificationContainer}>
@@ -73,12 +94,34 @@ const Notification = () => {
         </button>
       </div>
       <div className={styles.notifications}>
-        {notificationArray.length > 0 &&
-          notificationArray.map((notification, idx) => {
+        <InfiniteScroll
+          dataLength={notificationArray.length}
+          next={loadMore}
+          hasMore={hasMore}
+          loader={() => setIsLoading(true)}
+        >
+          {notificationArray.map((notification, idx) => {
             return (
-              <NotificationContent key={idx} notification={notification} />
+              <NotificationContent
+                key={idx}
+                notification={notification}
+                deleteHandler={handleNotificationDelete}
+              />
             );
           })}
+        </InfiniteScroll>
+        {isLoading && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "50px",
+            }}
+          >
+            <Spinner />
+          </div>
+        )}
       </div>
     </div>
   );

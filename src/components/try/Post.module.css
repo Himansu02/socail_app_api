@@ -86,8 +86,17 @@
   border: 1px solid #ccc;
   max-height: 150px;
   overflow-y: auto;
-  width: 100%;
+  width: 50%;
   z-index: 999; /* Adjust the z-index as needed */
+}
+
+.dropDownImageContainer{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+  margin-left: 10px;
 }
 
 /* Mention dropdown item */
@@ -95,6 +104,8 @@
   padding: 8px 12px;
   cursor: pointer;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
 }
 
 .mentionItem:hover {
@@ -164,6 +175,17 @@
 
 .mentionLink{
   color:red
+}
+
+.noCommentContainer{
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.noCommentContainer p{
+  font-size: 22px;
+  color: #999;
 }
 
 .inputArea {

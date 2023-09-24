@@ -2,15 +2,30 @@ const router = require("express").Router();
 const Comment = require("../models/comment");
 const Notification = require("../models/notification")
 
-//get a post comment
-router.get('/:id',async(req,res)=>{
-    try{
-        const comments=await Comment.find({postId:req.params.id}).sort({createdAt:-1})
-        return res.status(200).json(comments)
-    }catch(err){
-        res.status(500).json(err)
-    }
-})
+// GET post comments with pagination
+router.get('/:id', async (req, res) => {
+  const postId = req.params.id;
+  try {
+      const { page, limit } = req.query; // Get page and limit from query parameters
+
+      // Convert page and limit to integers (you can add validation here)
+      const pageNumber = parseInt(page);
+      const limitNumber = parseInt(limit);
+
+      // Calculate the skip value to skip comments from previous pages
+      const skip = (pageNumber - 1) * limitNumber;
+
+      // Fetch post comments with pagination and sort by createdAt in descending order
+      const comments = await Comment.find({ postId })
+          .sort({ createdAt: -1 })
+          .skip(skip) // Skip comments from previous pages
+          .limit(limitNumber); // Limit the number of comments per page
+
+      return res.status(200).json(comments);
+  } catch (err) {
+      return res.status(500).json(err);
+  }
+});
 
 //post a comment
 router.post('/',async(req,res)=>{
@@ -64,6 +79,16 @@ router.put("/:id/unlike", async (req, res) => {
       res.status(500).json(err);
     }
   });
+
+  //Delete a comment
+  router.delete("/:id",async(req,res)=>{
+    try{
+      await Comment.findByIdAndDelete(req.params.id)
+      res.status(200).json("deleted")
+    }catch(err){
+      res.status(500).json(err)
+    }
+  })
 
 
 module.exports = router;

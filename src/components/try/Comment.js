@@ -1,14 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styles from "./Comment.module.css";
-import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { Delete, Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { useUser } from "@clerk/clerk-react";
 
-const Comment = ({ comment, postId }) => {
+const Comment = ({ comment, postId, postUser, deleteHandler }) => {
   const [user, setUser] = useState(null);
   const [liked, setLiked] = useState(false);
   const [commentLikes, setCommentLikes] = useState(comment.likes.length);
+  const [isHovered, setIsHovered] = useState(false);
+  console.log(postUser);
 
   const { user: currentUser } = useUser();
 
@@ -72,6 +74,17 @@ const Comment = ({ comment, postId }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const res = await axios.delete(
+        `https://socail-app-api.vercel.app/comment/${comment._id}`
+      );
+      deleteHandler(comment._id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   let timestamp = "";
 
   const calculateTimeAgo = () => {
@@ -105,37 +118,60 @@ const Comment = ({ comment, postId }) => {
 
   calculateTimeAgo();
 
+  // Function to handle mouse enter event
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  // Function to handle mouse leave event
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
-    <div className={styles.post} id={comment?._id}>
-      <div>
-        <div className={styles.postHeader}>
-          <img
-            className={styles.profilePicture}
-            src={user?.profile_img}
-            alt="User Profile"
-          />
-          <div className={styles.nameContainer}>
-            <div className={styles.userInfo}>
-              <p className={styles.displayName}>{user?.fullname}</p>
-              <p className={styles.username}>@{user?.username}</p>
+    <div
+      className={styles.container}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      id={comment?._id}
+    >
+      {(comment.senderId === currentUser.id || postUser === currentUser.id) &&
+        isHovered && (
+          <div className={styles.deleteIcon} onClick={handleDelete}>
+            <Delete />
+          </div>
+        )}
+      <div className={styles.post}>
+        <div>
+          <div className={styles.postHeader}>
+            <img
+              className={styles.profilePicture}
+              src={user?.profile_img}
+              alt="User Profile"
+            />
+            <div className={styles.nameContainer}>
+              <div className={styles.userInfo}>
+                <p className={styles.displayName}>{user?.fullname}</p>
+                <p className={styles.username}>@{user?.username}</p>
+              </div>
+              <div className={styles.timestamp}>{timestamp}</div>
             </div>
-            <div className={styles.timestamp}>{timestamp}</div>
+          </div>
+          <div className={styles.messageContainer}>
+            <div
+              className={styles.postContent}
+              dangerouslySetInnerHTML={{ __html: comment?.text }}
+            />
           </div>
         </div>
-        <div className={styles.messageContainer}>
-          <div
-            className={styles.postContent}
-            dangerouslySetInnerHTML={{ __html: comment?.text }}
-          />
+        <div
+          className={`${styles.likeBox} ${liked && styles.liked}`}
+          onClick={handleLike}
+        >
+          {!liked && <FavoriteBorder />}
+          {liked && <Favorite />}
+          {commentLikes > 0 && <span>{commentLikes}</span>}
         </div>
-      </div>
-      <div
-        className={`${styles.likeBox} ${liked && styles.liked}`}
-        onClick={handleLike}
-      >
-        {!liked && <FavoriteBorder />}
-        {liked && <Favorite />}
-        {commentLikes > 0 && <span>{commentLikes}</span>}
       </div>
     </div>
   );

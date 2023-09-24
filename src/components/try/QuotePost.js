@@ -60,7 +60,6 @@ function QuotePost({ post }) {
   }, [post]);
 
   const handleDotClick = (e) => {
-    e.preventDefault();
     setOpenDot(!openDot);
   };
 
@@ -142,10 +141,6 @@ function QuotePost({ post }) {
 
   calculateTimeAgo();
 
-  const handleClick = (e) => {
-    e.preventDefault();
-  };
-
   const handleClose = () => {
     setOpen(false);
     setOpenModal({
@@ -191,7 +186,7 @@ function QuotePost({ post }) {
       <p className={styles.quoteText}>{post?.desc}</p>
 
       {post?.image.length > 0 && (
-        <div onClick={handleClick} className={styles.postedImageContainer}>
+        <div className={styles.postedImageContainer}>
           <CarouselComponent height={680} size={728} images={post?.image} />
         </div>
       )}
@@ -279,7 +274,7 @@ function QuotePost({ post }) {
         onClose={handleClose}
         open={open}
         style={{
-          position: "absolute",
+          position: "fixed", // Set to fixed position
           boxShadow: "2px solid black",
           height: 700,
           width: 650,

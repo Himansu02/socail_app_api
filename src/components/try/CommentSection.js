@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./CommentSection.module.css";
 import { FavoriteBorder } from "@mui/icons-material";
 import Comment from "./Comment";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const CommentSection = ({ comments,postId }) => {
 

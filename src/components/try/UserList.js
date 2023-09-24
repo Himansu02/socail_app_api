@@ -10,6 +10,7 @@ import {
   reArrangeList,
 } from "./redux/chatReducer";
 import axios from "axios";
+import Spinner from "../UI/Spinner";
 
 function UserList({ searchName }) {
   const conversations = useSelector((state) => state.chat.userMessageList);

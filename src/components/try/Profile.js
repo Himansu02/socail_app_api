@@ -10,6 +10,8 @@ import EditProfile from "./EditProfile";
 import { Cake, CalendarMonth, Place } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getNewConversation, setOpenChart } from "./redux/chatReducer";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Spinner from "../UI/Spinner";
 
 const Profile = () => {
   const [selectedSection, setSelectedSection] = useState("post");
@@ -18,6 +20,12 @@ const Profile = () => {
   const [openEditProfile, setOpenEditProfile] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
   const [media, setMedia] = useState([]);
+  const [hasMore, setHasMore] = useState(true); // Track if there are more posts to load
+  const [page, setPage] = useState(1); // Track the current page
+  const [isLoading, setIsLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(true);
+
+  const postsPerPage = 4;
 
   const socket = useSelector((state) => state.socket.socket);
 
@@ -56,6 +64,11 @@ const Profile = () => {
   const reduxUser = useSelector((state) => state.user.user);
   // console.log(user)
 
+  const loadMore = () => {
+    console.log("called");
+    setPage(page + 1);
+  };
+
   const { userId } = useParams();
   useEffect(() => {
     const getUserData = async () => {
@@ -66,6 +79,7 @@ const Profile = () => {
 
         setProfileUser(res.data);
         setMedia(res.data.media);
+        setProfileLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -77,21 +91,29 @@ const Profile = () => {
     const getTimelinePost = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/post/timeline/${userId}`
+          `https://socail-app-api.vercel.app/post/timeline/${userId}?page=${page}&limit=${postsPerPage}`
         );
-        setUserPosts(res.data);
+        if (res.data.length === 0) {
+          setHasMore(false); // No more posts to load
+        } else {
+          setUserPosts((prev) => [...prev, ...res.data]);
+        }
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
     };
     getTimelinePost();
-  }, [userId]);
+  }, [page]);
 
   const handleStartChat = async () => {
     try {
       const res = await axios.post(
         "https://socail-app-api.vercel.app/conversation",
-        { senderId: user.id, receiverId: userId }
+        {
+          senderId: user.id,
+          receiverId: userId,
+        }
       );
       console.log(res.data);
       if (res.data.status === "new") {
@@ -226,14 +248,21 @@ const Profile = () => {
           <div className={styles.contentContainer}>
             {selectedSection === "post" && (
               <div>
-                {userPosts?.map((post, index) => (
-                  <Link to="/post" className={styles.link} key={index}>
-                    <QuotePost post={post} />
-                  </Link>
-                ))}
-                <div className={styles.lastMsgContainer}>
-                  <p>Add New Posts.</p>
-                </div>
+                <InfiniteScroll
+                  dataLength={userPosts.length}
+                  next={loadMore}
+                  hasMore={hasMore}
+                  loader={() => setIsLoading(true)}
+                >
+                  {userPosts?.map((post, index) => (
+                    <QuotePost post={post} key={index} />
+                  ))}
+                </InfiniteScroll>
+                {userPosts.length === 0 && (
+                  <div className={styles.noPostContainer}>
+                    <p>No Posts.</p>
+                  </div>
+                )}
               </div>
             )}
             {selectedSection === "media" && (
@@ -244,6 +273,18 @@ const Profile = () => {
                     <p>No Media.</p>
                   </div>
                 )}
+              </div>
+            )}
+            {isLoading && (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "50px",
+                }}
+              >
+                <Spinner />
               </div>
             )}
           </div>

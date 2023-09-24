@@ -7,7 +7,7 @@ const postReducer=createSlice({
     },
     reducers:{
         getAllPost:(state,action)=>{
-            state.postArray=action.payload
+            state.postArray=[...state.postArray,...action.payload]
         },
         addPost:(state,action)=>{
             state.postArray=[action.payload,...state.postArray]

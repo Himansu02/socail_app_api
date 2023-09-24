@@ -1,14 +1,23 @@
 .container{
     width: 100%;
-    position: relative;
     background-color: white;
+    height: 100%;
+    position: relative;
 }
 
 .mainSection{
-    position: absolute;
-    top: 23%;
     width: 100%;
-    height: 100vh;
+}
+
+.noPostContainer{
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.noPostContainer p{
+  font-size: 22px;
+  color: #999;
 }
 
 .proImageContainer{
@@ -18,6 +27,9 @@
     overflow: hidden;
     margin-left: 10px;
     border: 5px solid white;
+    position: absolute;
+    top: 170px;
+    left: 0;
 }
 
 .proImage{
@@ -30,7 +42,6 @@
     width: 100%;
     height: 250px;
     overflow: hidden;
-    position: absolute;
 }
 
 .coverImage{
@@ -45,6 +56,7 @@
 
 .profileInfoContainer{
     padding: 15px;
+    margin-top: 70px;
 }
 
 .profileInfoContainer p{

@@ -26,6 +26,9 @@ import CarouselComponent from "./CarouselComponent";
 import { Modal } from "@mui/material";
 import SearchContainer from "./SearchContainer";
 import UserLikeModal from "./UserLikeModal";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Comment from "./Comment";
+import Spinner from "../UI/Spinner";
 
 const Post = () => {
   const [post, setPost] = useState(null);
@@ -41,6 +44,11 @@ const Post = () => {
   const [mentionUsers, setMentionUsers] = useState([]); // List of users for mention suggestions
   const [mentionText, setMentionText] = useState(""); // Text entered for mention
   const [showMentionDropdown, setShowMentionDropdown] = useState(false);
+  const [hasMore, setHasMore] = useState(true); // Track if there are more posts to load
+  const [page, setPage] = useState(1); // Track the current page
+  const [isLoading, setIsLoading] = useState(true);
+
+  const postsPerPage = 3;
 
   const [liked, setLiked] = useState(false);
 
@@ -50,6 +58,19 @@ const Post = () => {
   const postId = params.postId;
 
   const reduxUser = useSelector((state) => state.user.user);
+
+  const loadMore = () => {
+    console.log("called");
+    setPage(page + 1);
+  };
+
+  const handleCommentDelete = (id) => {
+    setPostComments((prev) => {
+      return prev.filter((com) => {
+        return com._id !== id;
+      });
+    });
+  };
 
   useEffect(() => {
     if (commentId) {
@@ -104,15 +125,20 @@ const Post = () => {
     const getPostComment = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/comment/${postId}`
+          `https://socail-app-api.vercel.app/comment/${postId}?page=${page}&limit=${postsPerPage}`
         );
-        setPostComments(res.data);
+        if (res.data.length === 0) {
+          setHasMore(false); // No more posts to load
+        } else {
+          setPostComments((prev) => [...prev, ...res.data]);
+        }
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
     };
     getPostComment();
-  }, [postId]);
+  }, [page]);
 
   let timestamp = "";
 
@@ -305,6 +331,9 @@ const Post = () => {
 
       // Check if the parent element is an <a> tag
       if (parentElement && parentElement.tagName.toLowerCase() === "a") {
+        // Get the text content inside the <a> tag
+        const linkText = parentElement.textContent;
+
         const textLength = parentElement.innerText.length;
         const caretPosition = range.startOffset;
 
@@ -313,6 +342,9 @@ const Post = () => {
           e.preventDefault(); // Prevent default backspace/delete behavior
           parentElement.remove(); // Remove the entire <a> tag
         }
+
+        // Use 'linkText' to access the text content inside the <a> tag
+        console.log("Text inside <a> tag:", linkText);
       }
     }
   };
@@ -404,7 +436,7 @@ const Post = () => {
             dangerouslySetInnerHTML={{ __html: mentionText }}
           ></div>
           {showMentionDropdown && (
-            <div className={styles.mentionDropdown}>
+            <div className={styles.mentionDropDown}>
               {mentionUsers.map((user) => (
                 <div
                   key={user.id}
@@ -413,18 +445,60 @@ const Post = () => {
                     handleMentionSelect(user.username, user.externalId)
                   }
                 >
-                  {user.username}
+                  <div className={styles.dropDownImageContainer}>
+                    <img
+                      className={styles.img}
+                      src={user?.profile_img}
+                      alt=""
+                    />
+                  </div>
+                  {"@" + user.username}
                 </div>
               ))}
             </div>
           )}
         </div>
-        <div onClick={handleCommentSubmit}>
+        <div style={{ cursor: "pointer" }} onClick={handleCommentSubmit}>
           <Send />
         </div>
       </div>
       <div className={styles.commentSection}>
-        <CommentSection comments={postComments} postId={postId} />
+        <InfiniteScroll
+          dataLength={postComments.length}
+          next={loadMore}
+          hasMore={hasMore}
+          loader={() => setIsLoading(true)}
+        >
+          {postComments?.map((comment, index) => {
+            return (
+              <Comment
+                key={index}
+                comment={comment}
+                postId={postId}
+                postUser={post?.postedBy.externalId}
+                deleteHandler={handleCommentDelete}
+              />
+            );
+          })}
+        </InfiniteScroll>
+        {isLoading && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "50px",
+            }}
+          >
+            <Spinner />
+          </div>
+        )}
+
+        {postComments?.length === 0 && (
+          <div className={styles.noCommentContainer}>
+            <p>No Comments.</p>
+          </div>
+        )}
       </div>
       <Modal
         onClose={handleClose}

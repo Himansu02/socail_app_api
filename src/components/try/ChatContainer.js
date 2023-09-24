@@ -21,6 +21,7 @@ import { useUser } from "@clerk/clerk-react";
 import { getList, getOnlineUsers } from "./redux/chatReducer";
 import OnlieUsers from "./OnlieUsers";
 import { Search } from "@mui/icons-material";
+import Spinner from "../UI/Spinner";
 
 const ChatContainer = () => {
   const { user } = useUser();
@@ -30,6 +31,7 @@ const ChatContainer = () => {
   const socket = useSelector((state) => state.socket.socket);
   const onlineUsers = useSelector((state) => state.chat.onlineUsers);
   const [searchName, setSearchName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (conversations.length === 0) {
@@ -38,8 +40,11 @@ const ChatContainer = () => {
           `https://socail-app-api.vercel.app/conversation/${user.id}`
         );
         dispatch(getList(res.data));
+        setIsLoading(false);
       };
       getConversationList();
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
@@ -83,7 +88,19 @@ const ChatContainer = () => {
             })}
           </div>
         )}
-        {conversations.length > 0 && <UserList searchName={searchName} />}
+        {!isLoading && <UserList searchName={searchName} />}
+        {isLoading && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "50px",
+            }}
+          >
+            <Spinner />
+          </div>
+        )}
       </div>
     </>
   );

@@ -1,6 +1,13 @@
+.container{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+
 .imgContainer {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     overflow: hidden;
     margin-right: 20px;
@@ -29,12 +36,12 @@
   }
 
   .notification {
-    padding: 10px;
     border-bottom: 1px solid #e1e1e1;
     display: flex;
     align-items: center;
     /* justify-content: center; */
     justify-content: space-between;
+    background-color: white;
   }
 
   .timestamp {

@@ -48,4 +48,14 @@ router.get("/:conversationId/lastmessage", async (req, res) => {
   }
 });
 
+//Delete a Message
+router.delete("/:id",async(req,res)=>{
+  try{
+    await Message.findByIdAndDelete(req.params.id)
+    res.status(200).json("deleted")
+  }catch(err){
+    res.status(500).json(err)
+  }
+})
+
 module.exports = router;

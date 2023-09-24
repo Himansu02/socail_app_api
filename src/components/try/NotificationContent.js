@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import styles from "./NotificationContent.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { Delete } from "@mui/icons-material";
 
 const keyValueMap = new Map();
 keyValueMap.set(1, "liked your post.");
 keyValueMap.set(2, "commented on your post ");
 keyValueMap.set(3, "liked your comment in a post");
 
-const NotificationContent = ({ notification }) => {
+const NotificationContent = ({ notification, deleteHandler }) => {
   const [sender, setSender] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const getSender = async () => {
@@ -54,45 +56,91 @@ const NotificationContent = ({ notification }) => {
 
   calculateTimeAgo();
 
-  return (
-    <Link
-      to={`/post/${notification.postId}/${
-        (notification.type === 2 || notification.type === 3) &&
-        notification.commentId
-      }`}
-      className={styles.link}
-    >
-      <div className={styles.notification}>
-        <div className={styles.leftContainer}>
-          <div className={styles.imgContainer}>
-            <img className={styles.img} src={sender?.profile_img} alt="" />
-          </div>
+  // Function to handle mouse enter event
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
 
-          <div className={styles.message}>
-            {notification.type === 1 && (
-              <p style={{ wordBreak: "break-word" }}>
-                {sender?.username + " " + keyValueMap.get(notification.type)}
-              </p>
-            )}
-            {notification.type === 2 && (
-              <p style={{ wordBreak: "break-word" }}>
-                {sender?.username +
-                  " " +
-                  keyValueMap.get(notification.type) +
-                  " : " +
-                  notification?.text}
-              </p>
-            )}
-            {notification.type === 3 && (
-              <p style={{ wordBreak: "break-word" }}>
-                {sender?.username + " " + keyValueMap.get(notification.type)}
-              </p>
-            )}
-          </div>
+  // Function to handle mouse leave event
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleMessageDelete = async () => {
+    try {
+      const res = await axios.delete(
+        `https://socail-app-api.vercel.app/notification/one/${notification?._id}`
+      );
+
+      deleteHandler(notification?._id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={styles.container}
+    >
+      {isHovered && (
+        <div
+          style={{ marginRight: "5px", cursor: "pointer" }}
+          onClick={handleMessageDelete}
+        >
+          <Delete />
         </div>
-        <div className={styles.timestamp}>{timestamp}</div>
+      )}
+      <div style={{ width: "100%" }}>
+        <Link
+          to={`/post/${notification.postId}/${
+            (notification.type === 2 || notification.type === 3) &&
+            notification.commentId
+          }`}
+          className={styles.link}
+        >
+          <div className={styles.notification}>
+            <div className={styles.leftContainer}>
+              <div className={styles.imgContainer}>
+                <img className={styles.img} src={sender?.profile_img} alt="" />
+              </div>
+
+              <div className={styles.message}>
+                {notification.type === 1 && (
+                  <p style={{ wordBreak: "break-word" }}>
+                    {sender?.username +
+                      " " +
+                      keyValueMap.get(notification.type)}
+                  </p>
+                )}
+                {notification.type === 2 && (
+                  <div
+                    style={{ wordBreak: "break-word" }}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        sender?.username +
+                        " " +
+                        keyValueMap.get(notification.type) +
+                        " : " +
+                        notification?.text,
+                    }}
+                  />
+                )}
+                {notification.type === 3 && (
+                  <p style={{ wordBreak: "break-word" }}>
+                    {sender?.username +
+                      " " +
+                      keyValueMap.get(notification.type)}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className={styles.timestamp}>{timestamp}</div>
+          </div>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 };
 

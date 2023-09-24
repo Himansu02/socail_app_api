@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import {
   Home,
   Explore,
@@ -11,21 +11,23 @@ import {
   Search,
 } from "@mui/icons-material";
 import styles from "./HomePage.module.css";
-import Timeline from "./Timeline";
+import Timeline from "../components/try/Timeline";
 import { Outlet, Link } from "react-router-dom";
-import ChatContainer from "./ChatContainer";
-import Conversation from "./Conversation";
-import ChatBox from "./ChatBox";
+
+import ChatBox from "../components/try/ChatBox";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "@mui/material";
-import NewPost from "./NewPost";
+import NewPost from "../components/try/NewPost";
 import { UserButton, useUser, useAuth } from "@clerk/clerk-react";
 import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
 import axios from "axios";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
-import { app, auth } from "../../Firebase";
-import SearchContainer from "./SearchContainer";
-import { getCurrentUser } from "./redux/userReducer";
+import { app, auth } from "../Firebase";
+import SearchContainer from "../components/try/SearchContainer";
+import { getCurrentUser } from "../components/try/redux/userReducer";
+const ChatContainer = lazy(() => import("../components/try/ChatContainer"));
+
+const Conversation = lazy(() => import("../components/try/Conversation"));
 
 const HomePage = () => {
   const { user } = useUser();
@@ -169,8 +171,10 @@ const HomePage = () => {
         <Outlet />
       </div>
       <div className={styles.chatArea}>
-        {!openChat && <ChatContainer />}
-        {openChat && <Conversation />}
+        <Suspense fallback={<h1>Loading........</h1>}>
+          {!openChat && <ChatContainer />}
+          {openChat && <Conversation />}
+        </Suspense>
       </div>
     </div>
   );

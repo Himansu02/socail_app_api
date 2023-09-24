@@ -5,9 +5,16 @@ const Notification = require("../models/notification");
 //GET all posts
 router.get("/", async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1; // Parse the page parameter, default to 1
+    const limit = parseInt(req.query.limit) || 10; // Parse the limit parameter, default to 10
+
+    const skip = (page - 1) * limit; // Calculate the number of posts to skip
+
     const data = await Post.find()
       .populate("postedBy", "externalId username fullname profile_img")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip) // Skip posts based on the page and limit
+      .limit(limit); // Limit the number of posts returned per request
     res.status(200).json(data);
   } catch (err) {
     return res.status(500).json(err);
@@ -111,14 +118,27 @@ router.put("/:id/unlike", async (req, res) => {
   }
 });
 
-//GET timeline post
+// GET timeline posts with pagination
 router.get("/timeline/:userId", async (req, res) => {
   const userId = req.params.userId;
   try {
+    const { page, limit } = req.query; // Get page and limit from query parameters
+
+    // Convert page and limit to integers (you can add validation here)
+    const pageNumber = parseInt(page);
+    const limitNumber = parseInt(limit);
+
+    // Calculate the skip value to skip posts from previous pages
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // Fetch timeline posts with pagination and sort by createdAt in descending order
     const data = await Post.find()
       .populate("postedBy", "externalId fullname username profile_img")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip) // Skip posts from previous pages
+      .limit(limitNumber); // Limit the number of posts per page
 
+    // Filter the posts to include only those posted by the specified user
     const result = data.filter((post) => post.postedBy.externalId === userId);
 
     return res.status(200).json(result);

@@ -5,6 +5,7 @@ import axios from "axios";
 import { Close, KeyboardBackspace, Send } from "@mui/icons-material";
 import CommentSection from "./CommentSection";
 import { useSelector } from "react-redux";
+import Comment from "./Comment";
 
 const CommentModal = ({ postId, closeModal }) => {
   const { user } = useUser();
@@ -101,6 +102,14 @@ const CommentModal = ({ postId, closeModal }) => {
     }
   };
 
+  const handleDelete = (id) => {
+    setPostComments((prev) => {
+      return prev.filter((com) => {
+        return com._id !== id;
+      });
+    });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.topContainer}>
@@ -131,7 +140,22 @@ const CommentModal = ({ postId, closeModal }) => {
         </div>
       </div>
       <div className={styles.commentSection}>
-        <CommentSection comments={postComments} postId={postId} />
+        {postComments?.map((comment, index) => {
+          return (
+            <Comment
+              key={index}
+              comment={comment}
+              postId={postId}
+              postUser={post?.postedBy.externalId}
+              deleteHandler={handleDelete}
+            />
+          );
+        })}
+        {postComments?.length === 0 && (
+          <div className={styles.noCommentContainer}>
+            <p>No Comments.</p>
+          </div>
+        )}
       </div>
     </div>
   );

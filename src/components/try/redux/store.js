@@ -19,7 +19,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['chat', 'user', 'post'],
+  whitelist: ['chat', 'user'],
 }
 
 const rootReducer=combineReducers({

@@ -14,62 +14,9 @@ import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 import SingleMessage from "./SingleMessage";
-
-const conversation = [
-  {
-    id: "user1",
-    timestamp: 1661222400000,
-    message: "Hey there! How are you?",
-  },
-  {
-    id: "user2",
-    timestamp: 1661233200000,
-    message: "Hello! I'm doing well, thanks. How about you?",
-  },
-  {
-    id: "user1",
-    timestamp: 1661244000000,
-    message: "I'm good too. Just working on a project.",
-  },
-  {
-    id: "user2",
-    timestamp: 1661254800000,
-    message: "That's great! What kind of project is it?",
-  },
-  {
-    id: "user1",
-    timestamp: 1661265600000,
-    message:
-      "I'm working on a new website for a client. It involves a lot of frontend development.",
-  },
-  {
-    id: "user2",
-    timestamp: 1661276400000,
-    message: "Sounds interesting! Frontend development can be quite creative.",
-  },
-  {
-    id: "user1",
-    timestamp: 1661287200000,
-    message: "Absolutely! I'm enjoying it, but it's also challenging at times.",
-  },
-  {
-    id: "user2",
-    timestamp: 1661298000000,
-    message: "I understand. Do you need any help with the project?",
-  },
-  {
-    id: "user1",
-    timestamp: 1661308800000,
-    message:
-      "Thanks for offering, but I'm managing it for now. I'll let you know if I run into any roadblocks.",
-  },
-  {
-    id: "user2",
-    timestamp: 1661319600000,
-    message:
-      "Sure, just give me a shout if you need assistance. Have a great day!",
-  },
-];
+import InfiniteScroll from "react-infinite-scroll-component";
+import LoadingSpinner from "../UI/LoadingSpinner";
+import Spinner from "../UI/Spinner";
 
 const Conversation = (props) => {
   const conversationId = useSelector((state) => state.chat.conversationId);
@@ -79,6 +26,7 @@ const Conversation = (props) => {
   const [inputMessage, setInputMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const sharePostContent = useSelector((state) => state.chat.sharePostContent);
+  const [isLoading, setIsLoading] = useState(true);
 
   const conversations = useSelector((state) => state.chat.userMessageList);
 
@@ -93,6 +41,11 @@ const Conversation = (props) => {
   const { user } = useUser();
 
   const scrollRef = useRef(null);
+
+  const existingChatIndex = conversations.findIndex((conv) => {
+    console.log(conv);
+    return conv._id === conversationId;
+  });
 
   useEffect(() => {
     socket.on("getMessage", (data) => {
@@ -182,6 +135,15 @@ const Conversation = (props) => {
       return;
     }
 
+    if (existingChatIndex !== -1) {
+      const updatedChatList = [...conversations];
+      const updatedChat = { ...updatedChatList[existingChatIndex] };
+      updatedChatList.splice(existingChatIndex, 1); // Remove the existing chat
+      updatedChatList.unshift(updatedChat); // Add the updated chat to the top
+
+      dispatch(getList(updatedChatList));
+    }
+
     const newMessage = {
       conversationId: conversationId,
       sender: user.id,
@@ -215,6 +177,7 @@ const Conversation = (props) => {
           `https://socail-app-api.vercel.app/message/${conversationId}`
         );
         setConversationMessage(res.data);
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -266,6 +229,10 @@ const Conversation = (props) => {
     return timestamp;
   };
 
+  const handleMessageDelete = (id) => {
+    setConversationMessage((prev) => prev.filter((msg) => msg?._id !== id));
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.topContainer}>
@@ -294,15 +261,28 @@ const Conversation = (props) => {
         </div>
       </div>
       <div className={styles.messageContainer} ref={messageContainerRef}>
-        {conversationMessage.map((msg, idx) => {
-          const timestamp = calculateTimeAgo(msg.createdAt);
+        {!isLoading &&
+          conversationMessage.map((msg, idx) => {
+            const timestamp = calculateTimeAgo(msg.createdAt);
 
-          return (
-            <div ref={scrollRef} key={idx}>
-              <SingleMessage msg={msg} key={idx} timestamp={timestamp} />
-            </div>
-          );
-        })}
+            return (
+              <div ref={scrollRef} key={idx}>
+                <SingleMessage
+                  msg={msg}
+                  key={idx}
+                  timestamp={timestamp}
+                  deleteHandler={handleMessageDelete}
+                />
+              </div>
+            );
+          })}
+        {isLoading && (
+          <div
+            style={{ width: "100%", display: "flex", justifyContent: "center" }}
+          >
+            <Spinner />
+          </div>
+        )}
       </div>
       <div className={styles.bottomContainer}>
         <input
