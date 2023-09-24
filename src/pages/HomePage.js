@@ -24,6 +24,7 @@ import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { app, auth } from "../Firebase";
 import SearchContainer from "../components/Modal/SearchContainer";
 import { getCurrentUser } from "../components/redux/userReducer";
+import Spinner from "../components/UI/Spinner";
 const ChatContainer = lazy(() => import("./ChatContainer"));
 
 const Conversation = lazy(() => import("./Conversation"));
@@ -170,7 +171,19 @@ const HomePage = () => {
         <Outlet />
       </div>
       <div className={styles.chatArea}>
-        <Suspense fallback={<h1>Loading........</h1>}>
+        <Suspense
+          fallback={
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Spinner />
+            </div>
+          }
+        >
           {!openChat && <ChatContainer />}
           {openChat && <Conversation />}
         </Suspense>

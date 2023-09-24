@@ -101,6 +101,11 @@ const ChatContainer = () => {
             <Spinner />
           </div>
         )}
+        {(conversations.length === 0 && !isLoading) && (
+          <div className={styles.noCoversationContainer}>
+            <p>No Conversation.</p>
+          </div>
+        )}
       </div>
     </>
   );

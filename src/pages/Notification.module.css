@@ -72,3 +72,14 @@
   align-items: center;
   /* justify-content: center; */
 }
+
+.noNotificationContainer{
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.noNotificationContainer p{
+  font-size: 22px;
+  color: #999;
+}

@@ -123,6 +123,11 @@ const Notification = () => {
           </div>
         )}
       </div>
+      {(notificationArray.length === 0 && !isLoading) && (
+        <div className={styles.noNotificationContainer}>
+          <p>No Notification.</p>
+        </div>
+      )}
     </div>
   );
 };

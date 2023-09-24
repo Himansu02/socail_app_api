@@ -24,4 +24,15 @@
     border-bottom: 1px solid #e1e1e1;
     margin-top: 10px;
   }
+
+  .noConversationContainer{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .noConversationContainer p{
+    font-size: 22px;
+    color: #999;
+  }
   
