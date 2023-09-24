@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 import { Suspense, lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCurrentSocket } from "./components/try/redux/socketReducer";
+import { getCurrentSocket } from "./components/redux/socketReducer";
 
 import {
   RouterProvider,
@@ -13,15 +13,11 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
-
 import NotFound from "./pages/NotFound";
-
 
 import "./App.css";
 
 import HomePage from "./pages/HomePage";
-
-
 
 import {
   ClerkProvider,
@@ -35,13 +31,13 @@ import {
 } from "@clerk/clerk-react";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
 
-const Timeline = lazy(() => import("./components/try/Timeline"));
+const Timeline = lazy(() => import("./pages/Timeline"));
 
-const Notification = lazy(() => import("./components/try/Notification"));
+const Notification = lazy(() => import("./pages/Notification"));
 
-const Post = lazy(() => import("./components/try/Post"));
+const Post = lazy(() => import("./pages/Post"));
 
-const Profile = lazy(() => import("./components/try/Profile"));
+const Profile = lazy(() => import("./pages/Profile"));
 
 const clerk_publisable_key = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 

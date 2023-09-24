@@ -11,23 +11,22 @@ import {
   Search,
 } from "@mui/icons-material";
 import styles from "./HomePage.module.css";
-import Timeline from "../components/try/Timeline";
+import Timeline from "./Timeline";
 import { Outlet, Link } from "react-router-dom";
 
-import ChatBox from "../components/try/ChatBox";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "@mui/material";
-import NewPost from "../components/try/NewPost";
+import NewPost from "../components/Modal/NewPost";
 import { UserButton, useUser, useAuth } from "@clerk/clerk-react";
 import { collection, addDoc, getDocs, where, query } from "firebase/firestore";
 import axios from "axios";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { app, auth } from "../Firebase";
-import SearchContainer from "../components/try/SearchContainer";
-import { getCurrentUser } from "../components/try/redux/userReducer";
-const ChatContainer = lazy(() => import("../components/try/ChatContainer"));
+import SearchContainer from "../components/Modal/SearchContainer";
+import { getCurrentUser } from "../components/redux/userReducer";
+const ChatContainer = lazy(() => import("./ChatContainer"));
 
-const Conversation = lazy(() => import("../components/try/Conversation"));
+const Conversation = lazy(() => import("./Conversation"));
 
 const HomePage = () => {
   const { user } = useUser();
@@ -41,9 +40,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(
-        `https://socail-app-api.vercel.app/user/${user.id}`
-      );
+      const res = await axios.get(`http://localhost:5000/user/${user.id}`);
       dispatch(getCurrentUser(res.data));
     };
     fetchUser();
