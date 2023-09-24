@@ -48,7 +48,7 @@ const server = app.listen(process.env.PORT || 5000, () => {
 
 const io = socket(server, {
   cors: {
-    origin: "https://social-app-six-delta.vercel.app",
+    origin: "*",
     credentials: true,
   },
 });
