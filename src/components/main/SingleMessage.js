@@ -15,7 +15,7 @@ const SingleMessage = ({ msg, timestamp, deleteHandler }) => {
     if (msg?.postId) {
       const getPostData = async () => {
         const res = await axios.get(
-          `http://localhost:5000/post/${msg?.postId}`
+          `https://socail-app-api.vercel.app/post/${msg?.postId}`
         );
         console.log(res.data);
         setPost(res.data);
@@ -37,7 +37,7 @@ const SingleMessage = ({ msg, timestamp, deleteHandler }) => {
   const handleMessageDelete = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/message/${msg?._id}`
+        `https://socail-app-api.vercel.app/message/${msg?._id}`
       );
 
       deleteHandler(msg?._id);

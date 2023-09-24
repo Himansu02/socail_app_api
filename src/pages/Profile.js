@@ -76,7 +76,9 @@ const Profile = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/user/${userId}`);
+        const res = await axios.get(
+          `https://socail-app-api.vercel.app/user/${userId}`
+        );
 
         setProfileUser(res.data);
         setMedia(res.data.media);
@@ -92,7 +94,7 @@ const Profile = () => {
     const getTimelinePost = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/post/timeline/${userId}?page=${page}&limit=${postsPerPage}`
+          `https://socail-app-api.vercel.app/post/timeline/${userId}?page=${page}&limit=${postsPerPage}`
         );
         if (res.data.length === 0) {
           setHasMore(false); // No more posts to load
@@ -109,10 +111,13 @@ const Profile = () => {
 
   const handleStartChat = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/conversation", {
-        senderId: user.id,
-        receiverId: userId,
-      });
+      const res = await axios.post(
+        "https://socail-app-api.vercel.app/conversation",
+        {
+          senderId: user.id,
+          receiverId: userId,
+        }
+      );
       console.log(res.data);
       if (res.data.status === "new") {
         const newMessage = {
@@ -122,7 +127,7 @@ const Profile = () => {
         };
         dispatch(getNewConversation(res.data.conversation));
         const data = await axios.post(
-          "http://localhost:5000/message/",
+          "https://socail-app-api.vercel.app/message/",
           newMessage
         );
 

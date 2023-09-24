@@ -16,7 +16,7 @@ const NotificationContent = ({ notification, deleteHandler }) => {
   useEffect(() => {
     const getSender = async () => {
       const res = await axios.get(
-        `http://localhost:5000/user/${notification.senderId}`
+        `https://socail-app-api.vercel.app/user/${notification.senderId}`
       );
       setSender(res.data);
     };
@@ -69,7 +69,7 @@ const NotificationContent = ({ notification, deleteHandler }) => {
   const handleMessageDelete = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/notification/one/${notification?._id}`
+        `https://socail-app-api.vercel.app/notification/one/${notification?._id}`
       );
 
       deleteHandler(notification?._id);

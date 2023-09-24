@@ -96,7 +96,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const socket = io("http://localhost:5000/",{transports:['websocket']});
+    const socket = io("https://socail-app-api.vercel.app/",{transports:['websocket']});
     dispatch(getCurrentSocket(socket));
   }, []);
 

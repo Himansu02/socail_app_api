@@ -140,7 +140,7 @@ const EditProfile = ({ user }) => {
             const updateUser = async () => {
               try {
                 const res = await axios.put(
-                  `http://localhost:5000/user/update/${user?.externalId}`,
+                  `https://socail-app-api.vercel.app/user/update/${user?.externalId}`,
                   { ...updatedUser, cover_img: downloadURL }
                 );
                 dispatch(updateCurrentUser(res.data));
@@ -166,7 +166,7 @@ const EditProfile = ({ user }) => {
         try {
           console.log("working");
           const res = await axios.put(
-            `http://localhost:5000/user/update/${user?.externalId}`,
+            `https://socail-app-api.vercel.app/user/update/${user?.externalId}`,
             updatedUser
           );
           dispatch(updateCurrentUser(res.data));

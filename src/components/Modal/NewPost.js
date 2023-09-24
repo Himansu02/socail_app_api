@@ -133,12 +133,12 @@ const NewPost = ({ closeModal }) => {
                   const sentPostData = async () => {
                     try {
                       const res = await axios.post(
-                        "http://localhost:5000/post",
+                        "https://socail-app-api.vercel.app/post",
                         postData
                       );
                       dispatch(addPost(res.data));
                       const data = await axios.put(
-                        `http://localhost:5000/user/update/${user.id}/media`,
+                        `https://socail-app-api.vercel.app/user/update/${user.id}/media`,
                         postData.image
                       );
                       console.log(data.data);
@@ -155,7 +155,10 @@ const NewPost = ({ closeModal }) => {
           );
         }
       } else {
-        const res = await axios.post("http://localhost:5000/post", postData);
+        const res = await axios.post(
+          "https://socail-app-api.vercel.app/post",
+          postData
+        );
         dispatch(addPost(res.data));
         closeModal();
       }
