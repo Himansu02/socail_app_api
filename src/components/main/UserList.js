@@ -61,7 +61,7 @@ function UserList({ searchName }) {
         const getConversation = async () => {
           try {
             const res = await axios.get(
-              `https://socail-app-api.vercel.app/conversation/one/${data.conversationId}`
+              `http://localhost:5000/conversation/one/${data.conversationId}`
             );
             dispatch(getNewConversation(res.data));
           } catch (err) {

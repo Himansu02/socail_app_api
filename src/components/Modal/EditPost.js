@@ -14,9 +14,7 @@ const EditPost = ({ postId, close }) => {
   useEffect(() => {
     if (postId) {
       const getPostData = async () => {
-        const res = await axios.get(
-          `https://socail-app-api.vercel.app/post/${postId}`
-        );
+        const res = await axios.get(`http://localhost:5000/post/${postId}`);
         setPost(res.data);
         setInputText(res.data.desc);
       };
@@ -40,7 +38,7 @@ const EditPost = ({ postId, close }) => {
         image: images,
       };
       const res = await axios.put(
-        `https://socail-app-api.vercel.app/post/${postId}`,
+        `http://localhost:5000/post/${postId}`,
         updateData
       );
       dispatch(updatePost({ postId: postId, post: res.data }));

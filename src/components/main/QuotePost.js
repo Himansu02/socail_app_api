@@ -44,9 +44,7 @@ function QuotePost({ post }) {
 
   useEffect(() => {
     const getPostComment = async () => {
-      const res = await axios.get(
-        `https://socail-app-api.vercel.app/comment/${post._id}`
-      );
+      const res = await axios.get(`http://localhost:5000/comment/${post._id}`);
       setPostComments(res.data);
     };
     getPostComment();
@@ -85,7 +83,7 @@ function QuotePost({ post }) {
 
       try {
         const res = await axios.put(
-          `https://socail-app-api.vercel.app/post/${post?._id}/like`,
+          `http://localhost:5000/post/${post?._id}/like`,
           { userId: user.id, receverId: post?.postedBy.externalId }
         );
       } catch (err) {
@@ -101,7 +99,7 @@ function QuotePost({ post }) {
 
       try {
         const res = await axios.put(
-          `https://socail-app-api.vercel.app/post/${post?._id}/unlike`,
+          `http://localhost:5000/post/${post?._id}/unlike`,
           { userId: user.id, receverId: post?.postedBy.externalId }
         );
       } catch (err) {}

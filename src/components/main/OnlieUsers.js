@@ -8,9 +8,7 @@ const OnlieUsers = ({ userId }) => {
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        const res = await axios.get(
-          `https://socail-app-api.vercel.app/user/${userId}`
-        );
+        const res = await axios.get(`http://localhost:5000/user/${userId}`);
         setUser(res.data);
       } catch (err) {
         console.log(err);

@@ -28,10 +28,7 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
     });
 
     try {
-      const res = await axios.post(
-        "https://socail-app-api.vercel.app/message",
-        data
-      );
+      const res = await axios.post("http://localhost:5000/message", data);
       if (!openChat) {
         dispatch(
           setOpenChart({
@@ -52,7 +49,7 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
     const getConversationUser = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/user/${conversationUserId}`
+          `http://localhost:5000/user/${conversationUserId}`
         );
         setConversationUser(res.data);
       } catch (err) {

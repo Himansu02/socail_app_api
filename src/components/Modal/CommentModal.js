@@ -25,9 +25,7 @@ const CommentModal = ({ postId, closeModal }) => {
   useEffect(() => {
     const getPostComment = async () => {
       try {
-        const res = await axios.get(
-          `https://socail-app-api.vercel.app/comment/${postId}`
-        );
+        const res = await axios.get(`http://localhost:5000/comment/${postId}`);
         setPostComments(res.data);
       } catch (err) {
         console.log(err);
@@ -39,9 +37,7 @@ const CommentModal = ({ postId, closeModal }) => {
   useEffect(() => {
     if (postId) {
       const getPostData = async () => {
-        const res = await axios.get(
-          `https://socail-app-api.vercel.app/post/${postId}`
-        );
+        const res = await axios.get(`http://localhost:5000/post/${postId}`);
         setPost(res.data);
       };
       getPostData();
@@ -60,7 +56,7 @@ const CommentModal = ({ postId, closeModal }) => {
 
       try {
         const res = await axios.post(
-          "https://socail-app-api.vercel.app/comment",
+          "http://localhost:5000/comment",
           newComment
         );
 
@@ -88,7 +84,7 @@ const CommentModal = ({ postId, closeModal }) => {
 
         try {
           const res = await axios.post(
-            `https://socail-app-api.vercel.app/notification/`,
+            `http://localhost:5000/notification/`,
             notification
           );
         } catch (err) {

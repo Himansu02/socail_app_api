@@ -37,7 +37,7 @@ const ChatContainer = () => {
     if (conversations.length === 0) {
       const getConversationList = async () => {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/conversation/${user.id}`
+          `http://localhost:5000/conversation/${user.id}`
         );
         dispatch(getList(res.data));
         setIsLoading(false);
@@ -101,7 +101,7 @@ const ChatContainer = () => {
             <Spinner />
           </div>
         )}
-        {(conversations.length === 0 && !isLoading) && (
+        {conversations.length === 0 && !isLoading && (
           <div className={styles.noCoversationContainer}>
             <p>No Conversation.</p>
           </div>

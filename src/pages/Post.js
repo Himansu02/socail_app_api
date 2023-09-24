@@ -84,7 +84,7 @@ const Post = () => {
 
   useEffect(() => {
     const getAllUsers = async () => {
-      const res = await axios.get("https://socail-app-api.vercel.app/user");
+      const res = await axios.get("http://localhost:5000/user");
       setAllUsers(res.data);
     };
     getAllUsers();
@@ -93,9 +93,7 @@ const Post = () => {
   useEffect(() => {
     if (postId) {
       const getPostData = async () => {
-        const res = await axios.get(
-          `https://socail-app-api.vercel.app/post/${postId}`
-        );
+        const res = await axios.get(`http://localhost:5000/post/${postId}`);
         setPost(res.data);
         setLiked(res.data.like.includes(user.id));
         setPostLikes(res.data.like);
@@ -125,7 +123,7 @@ const Post = () => {
     const getPostComment = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/comment/${postId}?page=${page}&limit=${postsPerPage}`
+          `http://localhost:5000/comment/${postId}?page=${page}&limit=${postsPerPage}`
         );
         if (res.data.length === 0) {
           setHasMore(false); // No more posts to load
@@ -197,7 +195,7 @@ const Post = () => {
       setLiked(!liked);
       try {
         const res = await axios.put(
-          `https://socail-app-api.vercel.app/post/${postId}/like`,
+          `http://localhost:5000/post/${postId}/like`,
           { userId: user.id }
         );
       } catch (err) {
@@ -206,7 +204,7 @@ const Post = () => {
 
       try {
         const res = await axios.post(
-          `https://socail-app-api.vercel.app/notification`,
+          `http://localhost:5000/notification`,
           notification
         );
       } catch (err) {
@@ -224,14 +222,14 @@ const Post = () => {
 
       try {
         const res = await axios.put(
-          `https://socail-app-api.vercel.app/post/${postId}/unlike`,
+          `http://localhost:5000/post/${postId}/unlike`,
           { userId: user.id }
         );
       } catch (err) {}
 
       try {
         const res = await axios.delete(
-          `https://socail-app-api.vercel.app/notification`,
+          `http://localhost:5000/notification`,
           notification
         );
       } catch (err) {
@@ -256,7 +254,7 @@ const Post = () => {
 
       try {
         const res = await axios.post(
-          "https://socail-app-api.vercel.app/comment",
+          "http://localhost:5000/comment",
           newComment
         );
 
@@ -284,7 +282,7 @@ const Post = () => {
 
         try {
           const res = await axios.post(
-            `https://socail-app-api.vercel.app/notification/`,
+            `http://localhost:5000/notification/`,
             notification
           );
         } catch (err) {

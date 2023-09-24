@@ -48,7 +48,7 @@ const User = ({ conversationUserId, id }) => {
     const getConversationUser = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/user/${conversationUserId}`
+          `http://localhost:5000/user/${conversationUserId}`
         );
         setConversationUser(res.data);
       } catch (err) {
@@ -62,7 +62,7 @@ const User = ({ conversationUserId, id }) => {
     const getLastMessage = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/message/${id}/lastmessage`
+          `http://localhost:5000/message/${id}/lastmessage`
         );
         // console.log(res.data.sender);
         // console.log(user.id);

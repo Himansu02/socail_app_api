@@ -41,9 +41,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(
-        `https://socail-app-api.vercel.app/user/${user.id}`
-      );
+      const res = await axios.get(`http://localhost:5000/user/${user.id}`);
       dispatch(getCurrentUser(res.data));
     };
     fetchUser();

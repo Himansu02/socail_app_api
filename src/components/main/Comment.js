@@ -18,7 +18,7 @@ const Comment = ({ comment, postId, postUser, deleteHandler }) => {
     const getUser = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/user/${comment.senderId}`
+          `http://localhost:5000/user/${comment.senderId}`
         );
         setUser(res.data);
         setLiked(comment.likes.includes(currentUser.id));
@@ -45,7 +45,7 @@ const Comment = ({ comment, postId, postUser, deleteHandler }) => {
       setLiked(!liked);
       try {
         const res = await axios.put(
-          `https://socail-app-api.vercel.app/comment/${comment?._id}/like`,
+          `http://localhost:5000/comment/${comment?._id}/like`,
           {
             userId: currentUser.id,
             postId: postId,
@@ -61,7 +61,7 @@ const Comment = ({ comment, postId, postUser, deleteHandler }) => {
       setLiked(!liked);
       try {
         const res = await axios.put(
-          `https://socail-app-api.vercel.app/comment/${comment?._id}/unlike`,
+          `http://localhost:5000/comment/${comment?._id}/unlike`,
           {
             userId: currentUser.id,
             postId: postId,
@@ -77,7 +77,7 @@ const Comment = ({ comment, postId, postUser, deleteHandler }) => {
   const handleDelete = async () => {
     try {
       const res = await axios.delete(
-        `https://socail-app-api.vercel.app/comment/${comment._id}`
+        `http://localhost:5000/comment/${comment._id}`
       );
       deleteHandler(comment._id);
     } catch (err) {

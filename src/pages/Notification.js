@@ -25,7 +25,7 @@ const Notification = () => {
     const getNotification = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/notification/${id}?page=${page}&limit=${postsPerPage}`
+          `http://localhost:5000/notification/${id}?page=${page}&limit=${postsPerPage}`
         );
         console.log(res.data);
         if (res.data.length === 0) {
@@ -123,7 +123,7 @@ const Notification = () => {
           </div>
         )}
       </div>
-      {(notificationArray.length === 0 && !isLoading) && (
+      {notificationArray.length === 0 && !isLoading && (
         <div className={styles.noNotificationContainer}>
           <p>No Notification.</p>
         </div>

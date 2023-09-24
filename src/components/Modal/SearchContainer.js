@@ -11,7 +11,7 @@ const SearchContainer = ({ clickHandler }) => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await axios.get("https://socail-app-api.vercel.app/user");
+        const res = await axios.get("http://localhost:5000/user");
         console.log(res);
 
         setImaginaryArray(res.data);

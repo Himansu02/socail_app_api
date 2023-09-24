@@ -95,7 +95,7 @@ const Conversation = (props) => {
           const getConversation = async () => {
             try {
               const res = await axios.get(
-                `https://socail-app-api.vercel.app/conversation/one/${data.conversationId}`
+                `http://localhost:5000/conversation/one/${data.conversationId}`
               );
               dispatch(getNewConversation(res.data));
             } catch (err) {
@@ -157,10 +157,7 @@ const Conversation = (props) => {
     });
 
     try {
-      const res = await axios.post(
-        "https://socail-app-api.vercel.app/message",
-        newMessage
-      );
+      const res = await axios.post("http://localhost:5000/message", newMessage);
       setConversationMessage((prev) => {
         return [...prev, res.data];
       });
@@ -174,7 +171,7 @@ const Conversation = (props) => {
     const getConversationMessage = async () => {
       try {
         const res = await axios.get(
-          `https://socail-app-api.vercel.app/message/${conversationId}`
+          `http://localhost:5000/message/${conversationId}`
         );
         setConversationMessage(res.data);
         setIsLoading(false);

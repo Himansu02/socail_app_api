@@ -8,9 +8,7 @@ const UserLikeModalElement = ({ id }) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await axios.get(
-        `https://socail-app-api.vercel.app/user/${id}`
-      );
+      const res = await axios.get(`http://localhost:5000/user/${id}`);
       setUser(res.data);
     };
     getUser();
