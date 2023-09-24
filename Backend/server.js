@@ -16,13 +16,13 @@ dotenv.config();
 
 app.use(express.json());
 
-app.use(cors());
-// app.use(function(req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-//     next();
-//   });
+// app.use(cors());
+app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
 
 app.use("/user", userRouter);
 app.use("/post", postRouter);
@@ -48,7 +48,10 @@ const server = app.listen(process.env.PORT || 5000, () => {
 });
 
 const io = new Server(server, {
-  cors: { origin: "*" },
+  cors: {
+    origin: "https://social-app-six-delta.vercel.app/",
+    credentials: true,
+  },
 });
 
 // To  receive event from client use socket.on and to send event use io.emit(this is forwaded to all users) or io.to(id).emit(this will send to a specific user)
