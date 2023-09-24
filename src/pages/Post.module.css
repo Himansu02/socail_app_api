@@ -1,0 +1,246 @@
+.container {
+  background-color: white;
+  width: 100%;
+  padding: 30px;
+}
+
+.header{
+  margin-bottom: 40px;
+}
+
+.post {
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.link{
+  color: black;
+  text-decoration: none;
+  margin-right: 10px;
+}
+.postImageContainer {
+  flex: 1 1 calc(50% - 10px); /* 50% width with 10px gap between images */
+  max-width: 100%;
+  padding: 10px;
+  max-height: 800px;
+}
+
+.postImageContainer img {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.selectedImagesContainer{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.postHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.imgContainer{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+}
+.img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.commentImgContainer{
+  width: 60px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.commentImg{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.displayName {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.favorite{
+  cursor: pointer;
+}
+.mentionDropDown {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 50%;
+  z-index: 999; /* Adjust the z-index as needed */
+}
+
+.dropDownImageContainer{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+  margin-left: 10px;
+}
+
+/* Mention dropdown item */
+.mentionItem {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.mentionItem:hover {
+  background-color: #f0f0f0;
+}
+
+.liked{
+  color: rgb(237, 5, 78);
+}
+
+.username {
+  font-size: 15px;
+  color: #999;
+}
+.postContent {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  overflow: auto;
+  font-size: 18px;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #888;
+  margin-top: 20px;
+  margin-bottom: 10px;
+
+}
+
+.countContainer {
+  border-bottom: 1px solid #e1e1e1;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.likeCount p {
+  margin-right: 5px;
+}
+
+.replyCount p {
+  margin-right: 5px;
+}
+
+.likeCount {
+  font-size: 15px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.replyCount {
+  margin-left: 20px;
+  font-size: 15px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  display: flex;
+  border-bottom: 1px solid #e1e1e1;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mentionLink{
+  color:red
+}
+
+.noCommentContainer{
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.noCommentContainer p{
+  font-size: 22px;
+  color: #999;
+}
+
+.inputArea {
+  width: 100%;
+  padding: 20px;
+  overflow: auto;
+}
+
+.textContainer {
+  width: 80%;
+  min-height: 20px;
+  padding: 8px;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  border: none;
+  overflow: hidden;
+}
+
+.commentSection {
+  margin-top: 5px;
+  overflow: auto;
+  padding: 20px 0px;
+}
+
+.comment {
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin-top: 4px;
+}
+
+.highlightedComment {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19); 
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.suggestion {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  background-color: #f5f5f5;
+}

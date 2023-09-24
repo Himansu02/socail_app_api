@@ -1,0 +1,83 @@
+.container{
+    background-color: white;
+    width: 100%;
+    padding: 20px;
+    position: relative;
+    border-radius: 20px;
+}
+
+.inputContainer{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.inputContainer input{
+    padding: 10px;
+    width: 100%;
+}
+
+.noResultContainer{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.noResultContainer p{
+  font-size: 20px;
+  color: #999;
+}
+
+.postHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .postHeader:hover{
+    background-color: black;
+    color: white;
+  }
+  
+  .imageContainer{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+  }
+  
+  .profilePicture {
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .userInfo {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .displayName {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .username {
+    font-size: 14px;
+    color: #999;
+  }
+
+  .resultContainer{
+    padding: 20px;
+  }
+
+  .link{
+    text-decoration: none;
+    color: black;
+  }
+

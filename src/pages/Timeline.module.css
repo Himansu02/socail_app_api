@@ -1,0 +1,65 @@
+.timeline {
+  width: 100%;
+  /* background-color: white; */
+  height: 100%;
+  }
+
+  .tabs {
+    display: flex;
+    background-color: white;
+  }
+
+  .lastMsgContainer{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .noPostContainer{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .noPostContainer p{
+    font-size: 22px;
+    color: #999;
+  }
+
+  .lastMsgContainer p{
+    font-size: 22px;
+    color: #999;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+
+  .link{
+    text-decoration: none;
+    color: black;
+  }
+  
+  .activeTab {
+    color: #1da1f2;
+    border-bottom: 2px solid #1da1f2;
+  }
+
+  .title{
+    font-size: 35px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: black;
+    background-color: white;
+    border: 1px solid #e1e8ed;
+    height: 100px;
+    padding: 20px;
+  }
+  
