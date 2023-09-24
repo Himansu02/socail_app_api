@@ -10,7 +10,6 @@ const conversationRouter = require("./routes/conversation");
 const messageRouter = require("./routes/message");
 const notificationRouter = require("./routes/notification");
 const commentRouter = require("./routes/comment");
-const {Server}= require('socket.io')
 
 dotenv.config();
 
@@ -47,12 +46,12 @@ var server = app.listen(process.env.PORT || 5000, () => {
   console.log("Backend server is listening at 5000");
 });
 
-var io = new Server(server,{
+var io = require('socket.io')(server,{
   cors:{
-    origin:true,
+    origin:"https://social-app-six-delta.vercel.app/",
     credentials: true,
   },
-  allowEIO3: true,
+  rejectUnauthorized: false,
 });
 
 // To  receive event from client use socket.on and to send event use io.emit(this is forwaded to all users) or io.to(id).emit(this will send to a specific user)
