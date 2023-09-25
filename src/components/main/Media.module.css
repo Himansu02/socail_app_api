@@ -13,8 +13,7 @@
     width: 265px;
     height: 265px;
     object-fit: cover;
-    margin-left: 5px;
-    margin-top: 5px;
+    padding: 5px;
     cursor: pointer;
   }
   
@@ -43,4 +42,15 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .image{
+      width: 200px;
+      height: 200px;
+    }
+    .coverContainer
+    {
+      justify-content: center;
+    }
   }

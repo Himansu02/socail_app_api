@@ -9,6 +9,7 @@ import {
   Person,
   Add,
   Search,
+  Message,
 } from "@mui/icons-material";
 import styles from "./HomePage.module.css";
 import Timeline from "./Timeline";
@@ -38,6 +39,8 @@ const HomePage = () => {
   const socket = useSelector((state) => state.socket.socket);
   const dispatch = useDispatch();
   const [count, setCount] = useState(0);
+  const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -61,6 +64,12 @@ const HomePage = () => {
     });
   }, []);
 
+  const handleScroll = () => {
+    const currentScrollPos = window.scrollY;
+    setVisible(prevScrollPos > currentScrollPos);
+    setPrevScrollPos(currentScrollPos);
+  };
+
   const handleClose = () => {
     setOpen(false);
     setOpenPost(false);
@@ -80,6 +89,13 @@ const HomePage = () => {
   const handleNotificationClick = () => {
     setCount(0);
   };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [prevScrollPos, visible]);
 
   const navigationLinks = [
     {
@@ -155,9 +171,9 @@ const HomePage = () => {
         style={{
           position: "absolute",
           boxShadow: "2px solid black",
-          height: 700,
-          width: 650,
-          left: "30%",
+          height: window.innerWidth <= 768 ? 500 : 700,
+          width: window.innerWidth <= 768 ? 430 : 650,
+          left: `${window.innerWidth <= 768 ? "20%" : "30%"}`,
           top: "5%",
           overflow: "auto",
         }}
@@ -187,6 +203,27 @@ const HomePage = () => {
           {!openChat && <ChatContainer />}
           {openChat && <Conversation />}
         </Suspense>
+      </div>
+      <div className={`${styles.bottomNavbar} ${visible ? styles.visible : styles.hidden}`}>
+        <UserButton />
+        {navigationLinks.map((link, index) => (
+          <div key={index}>
+            <span>{link.icon}</span>
+          </div>
+        ))}
+
+        <div onClick={handleOpenPost}>
+          <span>
+            <Add fontSize="large" />
+          </span>
+        </div>
+        <div>
+          <span>
+            <Link to={"/chatBox"} className={styles.link}>
+              <Message fontSize="large" />
+            </Link>
+          </span>
+        </div>
       </div>
     </div>
   );

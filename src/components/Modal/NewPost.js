@@ -228,9 +228,9 @@ const NewPost = ({ closeModal }) => {
         style={{
           position: "absolute",
           boxShadow: "2px solid black",
-          height: 700,
-          width: 650,
-          left: "30%",
+          height: window.innerWidth <= 768 ? 500 : 700,
+          width: window.innerWidth <= 768 ? 430 : 650,
+          left: `${window.innerWidth <= 768 ? "20%" : "30%"}`,
           top: "5%",
           overflow: "auto",
         }}

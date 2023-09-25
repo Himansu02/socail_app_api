@@ -5,6 +5,8 @@ import { reArrangeList, setOpenChart } from "../redux/chatReducer";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import Spinner from "../UI/Spinner";
+import { useNavigate } from "react-router-dom";
+
 
 const User = ({ conversationUserId, id }) => {
   // console.log(conversation)
@@ -16,6 +18,7 @@ const User = ({ conversationUserId, id }) => {
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate=useNavigate()
 
   const getNotifications = () => {
     const notification = notificationIds?.find((n) => n.id === id);
@@ -44,6 +47,11 @@ const User = ({ conversationUserId, id }) => {
         conversationUser: conversationUser,
       })
     );
+    
+    if(window.innerWidth<=768)
+    {
+      navigate(`/chatBox/${id}`)
+    }
   };
 
   useEffect(() => {

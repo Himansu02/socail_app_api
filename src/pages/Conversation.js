@@ -12,7 +12,7 @@ import {
 } from "../components/redux/chatReducer";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SingleMessage from "../components/main/SingleMessage";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
@@ -33,9 +33,14 @@ const Conversation = (props) => {
   const messageContainerRef = useRef();
 
   const socket = useSelector((state) => state.socket.socket);
+  const navigate=useNavigate()
 
   const handleClick = () => {
     dispatch(setCloseChat());
+    if(window.innerWidth<=768)
+    {
+      navigate("/chatBox")
+    }
   };
 
   const { user } = useUser();
@@ -242,18 +247,18 @@ const Conversation = (props) => {
           </div>
           <div className={styles.topMiddleContainer}>
             <Link
-              to={`/profile/${conversationUser.externalId}`}
+              to={`/profile/${conversationUser?.externalId}`}
               className={styles.link}
             >
               <div className={styles.imgContainer}>
                 <img
                   className={styles.img}
-                  src={conversationUser.profile_img}
+                  src={conversationUser?.profile_img}
                   alt=""
                 />
               </div>
             </Link>
-            <p>{conversationUser.fullname}</p>
+            <p>{conversationUser?.fullname}</p>
           </div>
         </div>
         <div className={styles.video}>

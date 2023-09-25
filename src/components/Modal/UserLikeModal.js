@@ -6,8 +6,9 @@ import axios from "axios";
 import UserLikeModalElement from "./UserLikeModalElement";
 
 const UserLikeModal = ({ array }) => {
+  console.log(array)
   const imaginaryArray = array;
-  const [filteredArray, setFilteredArray] = useState(array);
+  const [filteredArray, setFilteredArray] = useState([...array]);
 
   const handleChange = (e) => {
     if (e.target.value.trim().length === 0) {

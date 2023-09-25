@@ -187,7 +187,7 @@ function QuotePost({ post }) {
 
       {post?.image.length > 0 && (
         <div className={styles.postedImageContainer}>
-          <CarouselComponent height={680} size={728} images={post?.image} />
+          <CarouselComponent height={window.innerWidth<=768?550:680} size={window.innerWidth<=768?window.innerWidth-100:728} images={post?.image} />
         </div>
       )}
 
@@ -276,9 +276,9 @@ function QuotePost({ post }) {
         style={{
           position: "fixed", // Set to fixed position
           boxShadow: "2px solid black",
-          height: 700,
-          width: 650,
-          left: "30%",
+          height: window.innerWidth <= 768 ? 500 : 700,
+          width: window.innerWidth <= 768 ? 430 : 650,
+          left: `${window.innerWidth <= 768 ? "20%" : "30%"}`,
           top: "5%",
           overflow: "auto",
         }}

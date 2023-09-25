@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./UserLikeModalElement.module.css";
 import axios from "axios";
+import Spinner from "../UI/Spinner";
 
 const UserLikeModalElement = ({ id }) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getUser = async () => {
@@ -12,26 +14,43 @@ const UserLikeModalElement = ({ id }) => {
         `https://socail-app-api.vercel.app/user/${id}`
       );
       setUser(res.data);
+      setIsLoading(false)
     };
     getUser();
   }, [id]);
 
   return (
-    <Link className={styles.link} to={`/profile/${user?.externalId}`}>
-      <div className={styles.postHeader}>
-        <div className={styles.imageContainer}>
-          <img
-            className={styles.profilePicture}
-            src={user?.profile_img}
-            alt="User Profile"
-          />
+    <>
+      {!isLoading && (
+        <Link className={styles.link} to={`/profile/${user?.externalId}`}>
+          <div className={styles.postHeader}>
+            <div className={styles.imageContainer}>
+              <img
+                className={styles.profilePicture}
+                src={user?.profile_img}
+                alt="User Profile"
+              />
+            </div>
+            <div className={styles.userInfo}>
+              <p className={styles.displayName}>{user?.fullname}</p>
+              <p className={styles.username}>{"@" + user?.username}</p>
+            </div>
+          </div>
+        </Link>
+      )}
+      {isLoading && (
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+        >
+          <Spinner />
         </div>
-        <div className={styles.userInfo}>
-          <p className={styles.displayName}>{user?.fullname}</p>
-          <p className={styles.username}>{"@" + user?.username}</p>
-        </div>
-      </div>
-    </Link>
+      )}
+    </>
   );
 };
 

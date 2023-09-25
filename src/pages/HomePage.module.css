@@ -1,107 +1,103 @@
 .container {
-    position: relative;
-    display: flex;
-    width: 100vw;
-    /* padding: 20px; */
-    height: 100vh;
-  }
-
-  .button{
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: black;
-    color: white;
-    margin-top: 50px;
-    cursor: pointer;
+  position: relative;
+  display: flex;
+  width: 100vw;
+  /* padding: 20px; */
+  height: 100vh;
 }
 
-  
-  .navigation {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    justify-content: flex-start;
-    background-color: white;
-    color: white;
-    width: 15vw;
-    padding: 20px;
-    border-radius: 5px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    position: relative;
-    position: fixed;
-  }
-  
-  .menuItem {
-    width: 100%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: flex;
-  }
-  
-  .content {
-    /* padding: 0 10px; */
-    display: flex;
-    width: 825px;
-    height: auto;
-    background-color: white;
-    position: absolute;
-    left: 16%;
-  }
+.button {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: black;
+  color: white;
+  margin-top: 50px;
+  cursor: pointer;
+}
 
-  .notificationContainer{
-    position: relative;
-  }
+.navigation {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: flex-start;
+  background-color: white;
+  color: white;
+  width: 15vw;
+  padding: 20px;
+  border-radius: 5px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  position: relative;
+  position: fixed;
+}
 
-  .count{
-    width: 10px;
-    height: 10px;
-    padding: 10px;
-    border-radius: 50%;
-    background-color: rgb(40, 40, 238);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: white;
-  }
+.menuItem {
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+}
 
-  .icon{
-    color: black;
-    
-  }
-  .linkName {
-    font-size: 15px;
-    color: black;
-    margin-left: 20px;
-  }
-  
-  .menuItem {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    margin-top: 20px;
-    padding: 20px 10px;
-  }
-  
-  
-  
-  .chatArea {
-    background-color: white;
-    position: fixed;
-    top: 0;
-    right: 0;
-    display: flex;
-    width: 430px;
-    height: 100vh;
-  }
+.content {
+  /* padding: 0 10px; */
+  display: flex;
+  width: 825px;
+  height: auto;
+  background-color: white;
+  position: absolute;
+  left: 16%;
+}
 
-.userButtonContainer{
+.notificationContainer {
+  position: relative;
+}
+
+.count {
+  width: 10px;
+  height: 10px;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: rgb(40, 40, 238);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+}
+
+.icon {
+  color: black;
+}
+.linkName {
+  font-size: 15px;
+  color: black;
+  margin-left: 20px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 20px;
+  padding: 20px 10px;
+}
+
+.chatArea {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  width: 430px;
+  height: 100vh;
+}
+
+.userButtonContainer {
   display: flex;
   color: black;
   align-items: center;
@@ -110,11 +106,55 @@
   width: 100%;
 }
 
-.fullName{
+.fullName {
   text-align: center;
 }
 
-.modalContainer{
+.modalContainer {
   outline: none;
 }
 
+/* Add these styles to your CSS file (HomePage.module.css) */
+.bottomNavbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  transition: bottom 0.3s;
+  display: none;
+  z-index: 1000;
+  padding: 10px;
+  width: 100%;
+}
+
+.bottomNavbar.visible{
+  bottom: 0;
+}
+.bottomNavbar.hidden {
+  bottom: -60px;
+}
+.link{
+  color: black;
+}
+
+
+
+@media only screen and (max-width: 768px) {
+  .navigation {
+    display: none;
+  }
+  .chatArea{
+    display: none;
+  }
+
+  .content{
+    width: 100%;
+    left: 0;
+  }
+  .bottomNavbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

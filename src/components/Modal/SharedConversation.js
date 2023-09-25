@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./SharedConversation.module.css";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
+import Spinner from "../UI/Spinner";
 
 const SharedConversation = ({ conversationUserId, id, postId }) => {
   const [conversationUser, setConversationUser] = useState(null);
@@ -12,6 +13,7 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
   const socket = useSelector((state) => state.socket.socket);
   const openChat = useSelector((state) => state.chat.openChat);
   const conversationId = useSelector((state) => state.chat.conversationId);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleClick = async () => {
     const data = {
@@ -55,6 +57,7 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
           `https://socail-app-api.vercel.app/user/${conversationUserId}`
         );
         setConversationUser(res.data);
+        setIsLoading(false)
       } catch (err) {
         console.log(err);
       }
@@ -62,20 +65,34 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
     getConversationUser();
   }, [conversationUserId]);
   return (
-    <div className={styles.container} onClick={handleClick}>
-      <div className={styles.postHeader}>
-        <div className={styles.imageContainer}>
-          <img
-            className={styles.profilePicture}
-            src={conversationUser?.profile_img}
-            alt="User Profile"
-          />
+    <>
+      {!isLoading && <div className={styles.container} onClick={handleClick}>
+        <div className={styles.postHeader}>
+          <div className={styles.imageContainer}>
+            <img
+              className={styles.profilePicture}
+              src={conversationUser?.profile_img}
+              alt="User Profile"
+            />
+          </div>
+          <div className={styles.userInfo}>
+            <p className={styles.displayName}>{conversationUser?.fullname}</p>
+          </div>
         </div>
-        <div className={styles.userInfo}>
-          <p className={styles.displayName}>{conversationUser?.fullname}</p>
+      </div>}
+      {isLoading && (
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+        >
+          <Spinner />
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

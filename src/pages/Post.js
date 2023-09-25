@@ -48,6 +48,8 @@ const Post = () => {
   const [page, setPage] = useState(1); // Track the current page
   const [isLoading, setIsLoading] = useState(true);
 
+  const [postLoading, setPostLoading] = useState(true);
+
   const postsPerPage = 3;
 
   const [liked, setLiked] = useState(false);
@@ -99,6 +101,7 @@ const Post = () => {
         setPost(res.data);
         setLiked(res.data.like.includes(user.id));
         setPostLikes(res.data.like);
+        setPostLoading(false);
       };
       getPostData();
     }
@@ -372,33 +375,51 @@ const Post = () => {
           Post
         </h1>
       </div>
-      <div className={styles.post}>
-        <div className={styles.postHeader}>
-          <Link
-            to={`/profile/${post?.postedBy.externalId}`}
-            className={styles.link}
-          >
-            <div className={styles.imgContainer}>
-              <img
-                className={styles.img}
-                src={post?.postedBy.profile_img}
-                alt=""
-              />
+      {!postLoading && (
+        <div className={styles.post}>
+          <div className={styles.postHeader}>
+            <Link
+              to={`/profile/${post?.postedBy.externalId}`}
+              className={styles.link}
+            >
+              <div className={styles.imgContainer}>
+                <img
+                  className={styles.img}
+                  src={post?.postedBy.profile_img}
+                  alt=""
+                />
+              </div>
+            </Link>
+            <div className={styles.userInfo}>
+              <p className={styles.displayName}>{post?.postedBy.fullname}</p>
+              <p className={styles.username}>@{post?.postedBy.username}</p>
             </div>
-          </Link>
-          <div className={styles.userInfo}>
-            <p className={styles.displayName}>{post?.postedBy.fullname}</p>
-            <p className={styles.username}>@{post?.postedBy.username}</p>
           </div>
+          <div className={styles.postContent}>{post?.desc}</div>
+
+          {post?.image.length > 0 && (
+            <CarouselComponent
+              size={window.innerWidth <= 768 ? window.innerWidth - 55 : 770}
+              height={window.innerWidth <= 768 ? 650 : null}
+              images={post?.image}
+            />
+          )}
+
+          <div className={styles.timestamp}>{timestamp}</div>
         </div>
-        <div className={styles.postContent}>{post?.desc}</div>
-
-        {post?.image.length > 0 && (
-          <CarouselComponent size={770} images={post?.image} />
-        )}
-
-        <div className={styles.timestamp}>{timestamp}</div>
-      </div>
+      )}
+      {postLoading && (
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            padding: "10px",
+          }}
+        >
+          <Spinner />
+        </div>
+      )}
       <div className={styles.countContainer}>
         <div className={styles.likeCount}>
           <p
@@ -504,16 +525,18 @@ const Post = () => {
         onClose={handleClose}
         open={open}
         style={{
-          position: "absolute",
+          position: "fixed",
           boxShadow: "2px solid black",
-          height: 700,
-          width: 650,
-          left: "30%",
+          height: window.innerWidth <= 768 ? 500 : 700,
+          width: window.innerWidth <= 768 ? 430 : 650,
+          left: `${window.innerWidth <= 768 ? "20%" : "30%"}`,
           top: "5%",
           overflow: "auto",
         }}
       >
-        <UserLikeModal array={postLikes} />
+        
+          <UserLikeModal array={postLikes} />
+        
       </Modal>
     </div>
   );

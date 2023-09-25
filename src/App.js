@@ -30,6 +30,8 @@ import {
   RedirectToSignIn,
 } from "@clerk/clerk-react";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
+import ChatContainer from "./pages/ChatContainer";
+import Conversation from "./pages/Conversation";
 
 const Timeline = lazy(() => import("./pages/Timeline"));
 
@@ -80,6 +82,9 @@ const router = createBrowserRouter(
         <Route path="/quotes" element={<Timeline />} />
 
         <Route path="/notifiaction/:id" element={<Notification />} />
+
+        <Route path="/chatBox" element={<ChatContainer />}/>
+        <Route path="/chatBox/:convId" element={<Conversation/>}/>
 
         <Route path="/post/:postId" element={<Post />} />
         <Route path="/post/:postId/:commentId" element={<Post />} />
