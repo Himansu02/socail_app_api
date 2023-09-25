@@ -6,12 +6,14 @@ import { Close, KeyboardBackspace, Send } from "@mui/icons-material";
 import CommentSection from "../main/CommentSection";
 import { useSelector } from "react-redux";
 import Comment from "../main/Comment";
+import Spinner from "../UI/Spinner";
 
 const CommentModal = ({ postId, closeModal }) => {
   const { user } = useUser();
   const [postComments, setPostComments] = useState([]);
   const socket = useSelector((state) => state.socket.socket);
   const [post, setPost] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const ref = useRef(null);
 
@@ -29,6 +31,7 @@ const CommentModal = ({ postId, closeModal }) => {
           `https://socail-app-api.vercel.app/comment/${postId}`
         );
         setPostComments(res.data);
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -151,7 +154,19 @@ const CommentModal = ({ postId, closeModal }) => {
             />
           );
         })}
-        {postComments?.length === 0 && (
+        {isLoading && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              padding: "20px",
+            }}
+          >
+            <Spinner />
+          </div>
+        )}
+        {!isLoading && postComments?.length === 0 && (
           <div className={styles.noCommentContainer}>
             <p>No Comments.</p>
           </div>

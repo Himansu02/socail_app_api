@@ -1,4 +1,4 @@
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import { Suspense, lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentSocket } from "./components/redux/socketReducer";
@@ -96,7 +96,11 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const socket = io("https://socail-app-api.vercel.app/",{transports:['polling']});
+    const socket = io("https://socail-app-api.vercel.app/", {
+      path: "/socket.io",
+      transports: ["websocket"],
+      secure: true,
+    });
     dispatch(getCurrentSocket(socket));
   }, []);
 
