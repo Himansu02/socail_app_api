@@ -1,10 +1,11 @@
 const express = require("express");
-var app = express();
+const app = express();
+const httpServer = require("http").createServer(app); // Use http to create the server
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const userRouter = require("./routes/user");
-const socket = require("socket.io");
+const {Server} = require("socket.io");
 const postRouter = require("./routes/post");
 const conversationRouter = require("./routes/conversation");
 const messageRouter = require("./routes/message");
@@ -42,16 +43,14 @@ mongoose
     console.log(err);
   });
 
-var server = app.listen(process.env.PORT || 5000, () => {
-  console.log("Backend server is listening at 5000");
-});
+  const io = new Server(httpServer, { 
+    cors:{
+      origin:"https://social-app-six-delta.vercel.app",
+      credentials:true
+    }
+   });
 
-var io = require('socket.io')(server,{
-  cors:{
-    origin:["https://social-app-six-delta.vercel.app"],
-    credentials: true,
-  }
-});
+//https://social-app-six-delta.vercel.app
 
 // To  receive event from client use socket.on and to send event use io.emit(this is forwaded to all users) or io.to(id).emit(this will send to a specific user)
 
@@ -120,3 +119,7 @@ io.on("connection", (socket) => {
     io.emit("getOnlineUsers", onlineUsers);
   });
 });
+
+httpServer.listen(process.env.PORT || 5000,()=>{
+  console.log(`Connection Established`)
+})
