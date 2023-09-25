@@ -273,15 +273,7 @@ function QuotePost({ post }) {
       <Modal
         onClose={handleClose}
         open={open}
-        style={{
-          position: "fixed", // Set to fixed position
-          boxShadow: "2px solid black",
-          height: window.innerWidth <= 768 ? 500 : 700,
-          width: window.innerWidth <= 768 ? 430 : 650,
-          left: `${window.innerWidth <= 768 ? "20%" : "30%"}`,
-          top: "5%",
-          overflow: "auto",
-        }}
+        className={styles.test}
       >
         <div style={{ outline: "none" }}>
           {openModal.edit && (

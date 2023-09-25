@@ -53,17 +53,7 @@
     color: #999;
   }
 
-  .dotContainer{
-    width: 200px;
-    position: absolute;
-    z-index: 10;
-    top: 56px;
-    right: 75px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
-    padding: 20px;
-    border-radius: 10px;
-  }
+
 
   .dot{
     padding: 5px;
@@ -162,7 +152,53 @@
     transform: scale(1.1);
   }
 
-  @media only screen and (max-width: 768px) {
-    
+  .test {
+    position: absolute;
+    padding: 20px;
+    height: 750px;
+    width: 750px;
+    margin: 0 auto;
+    overflow: auto;
   }
+
+  .dotContainer{
+    width: 200px;
+    position: absolute;
+    z-index: 10;
+    top: 56px;
+    right: 75px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .quotePost{
+      padding: 20px;
+    }
+    .test {
+      position: absolute;
+      padding: 20px;
+      aspect-ratio: 1/1;
+      width: 100%;
+      top: 5%;
+      overflow: auto;
+    }
+    .dotContainer{
+      width: 150px;
+      right: 55px;
+      top: 40px;
+    }
+    .dotContainer p{
+      margin: 9px 0px;
+      font-size:13px;
+      margin-left: 10px;
+      letter-spacing: 1px;
+    }
+    .postFooter{
+      margin-top: 40px;
+    }
+  }
+
   

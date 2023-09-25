@@ -18,6 +18,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { addPost } from "../redux/postReducer";
+import CarouselComponent from "../main/CarouselComponent";
 
 const NewPost = ({ closeModal }) => {
   const navigate = useNavigate();
@@ -44,7 +45,8 @@ const NewPost = ({ closeModal }) => {
 
   const handleImageChange = (e) => {
     const files = e.target.files;
-    const selectedImageArray = Array.from(files);
+    const selectedImageFiles = Array.from(files);
+    const selectedImageArray=selectedImageFiles.map((file)=>URL.createObjectURL(file))
     setSelectedImages((prev) => {
       return [...prev, ...selectedImageArray];
     });
@@ -186,17 +188,7 @@ const NewPost = ({ closeModal }) => {
         />
       </div>
       <div className={styles.selectedImagesContainer}>
-        {selectedImages.map((image, index) => (
-          <div className={styles.imageContainer} key={index}>
-            <img src={URL.createObjectURL(image)} alt={`Image ${index}`} />
-            <div
-              className={styles.removeIcon}
-              onClick={() => handleRemoveImage(index)}
-            >
-              <Close fontSize="small" />
-            </div>
-          </div>
-        ))}
+        {selectedImages.length>0 && <CarouselComponent images={selectedImages} pel={true} deleteHandler={handleRemoveImage}/>}
       </div>
       <div className={styles.postButton}>
         <div className={styles.mediaContainer}>
@@ -225,15 +217,7 @@ const NewPost = ({ closeModal }) => {
       </div>
       <Modal
         open={load}
-        style={{
-          position: "absolute",
-          boxShadow: "2px solid black",
-          height: window.innerWidth <= 768 ? 500 : 700,
-          width: window.innerWidth <= 768 ? 430 : 650,
-          left: `${window.innerWidth <= 768 ? "20%" : "30%"}`,
-          top: "5%",
-          overflow: "auto",
-        }}
+        className={styles.test}
       >
         <Loader progress={uploadProgress} />
       </Modal>

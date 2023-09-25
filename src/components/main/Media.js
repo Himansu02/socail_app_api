@@ -19,13 +19,15 @@ const Media = ({ images }) => {
       <div className={styles.coverContainer}>
         {images.map((image) => {
           return (
-            <img
-              className={styles.image}
-              src={image}
-              onClick={() => {
-                openModal(image);
-              }}
-            />
+            <div className={styles.imageContainer}>
+              <img
+                className={styles.image}
+                src={image}
+                onClick={() => {
+                  openModal(image);
+                }}
+              />
+            </div>
           );
         })}
       </div>

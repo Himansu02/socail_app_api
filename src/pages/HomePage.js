@@ -168,15 +168,7 @@ const HomePage = () => {
       <Modal
         onClose={handleClose}
         open={open}
-        style={{
-          position: "absolute",
-          boxShadow: "2px solid black",
-          height: window.innerWidth <= 768 ? 500 : 700,
-          width: window.innerWidth <= 768 ? 430 : 650,
-          left: `${window.innerWidth <= 768 ? "20%" : "30%"}`,
-          top: "5%",
-          overflow: "auto",
-        }}
+        className={styles.test}
       >
         <div className={styles.modalContainer}>
           {openPost && <NewPost closeModal={handleClose} />}

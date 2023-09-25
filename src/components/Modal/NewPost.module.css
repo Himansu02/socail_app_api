@@ -146,7 +146,26 @@
   }
 
   .selectedImagesContainer{
+    width: 100%;
     padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
+  }
+
+  .test {
+    position: absolute;
+    padding: 20px;
+    height: 750px;
+    width: 750px;
+    margin: 0 auto;
+    overflow: auto;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .test {
+      position: absolute;
+      padding: 20px;
+      aspect-ratio: 1/1;
+      width: 100%;
+      top: 5%;
+      overflow: auto;
+    }
   }

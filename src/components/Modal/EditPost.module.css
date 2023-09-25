@@ -67,3 +67,38 @@
   .postedImageContainer{
     padding: 10px 0px;
   }
+
+  .buttonContainer{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .button{
+    color: black;
+    background-color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100px;
+    border: none;
+    cursor: pointer;
+  }
+  .button:hover{
+    color: white;
+    background-color: black;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .inputArea{
+      width: 100%;
+      padding: 5px;
+      overflow: auto;
+    }
+    .inputArea textarea{
+      width: 100%;
+      padding: 8px;
+      font-size: 15px;
+    }
+  }

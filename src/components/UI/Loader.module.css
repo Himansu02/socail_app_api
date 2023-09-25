@@ -83,4 +83,14 @@
     font-size: 22px;
     color: white;
   }
+
+  @media only screen and (max-width: 768px) {
+    .percentage{
+      font-size: 17px;
+    }
+    .message{
+      font-size: 12px;
+      padding: 5px;
+    }
+  }
   

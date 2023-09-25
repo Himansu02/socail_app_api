@@ -15,6 +15,8 @@ const CarouselComponent = ({
   height,
   updatePostData,
   closeModal,
+  pel,
+  deleteHandler
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImages, setCurrentImages] = useState([...images]);
@@ -30,6 +32,7 @@ const CarouselComponent = ({
         return idx !== currentIndex;
       });
     });
+    deleteHandler(currentIndex)
   };
 
   const goToPrevSlide = () => {
@@ -50,7 +53,7 @@ const CarouselComponent = ({
   return (
     <div>
       <div className={styles.carousel}>
-        {del && (
+        {del || pel && (
           <button className={styles.deleteButton} onClick={handleDelete}>
             <Delete fontSize="large" />
           </button>
@@ -77,10 +80,6 @@ const CarouselComponent = ({
               className={`${styles.slide} ${
                 index === currentIndex ? styles.active : ""
               }`}
-              style={{
-                flex: `0 0 ${size + "px"}`,
-                height: height ? height : "752px",
-              }}
             >
               {isLoading && (
                 <div
@@ -114,26 +113,6 @@ const CarouselComponent = ({
           </div>
         )}
       </div>
-      {del && (
-        <div className={styles.buttonContainer}>
-          <button
-            className={styles.button}
-            onClick={() => {
-              closeModal();
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            className={styles.button}
-            onClick={() => {
-              updatePostData(currentImages);
-            }}
-          >
-            Done
-          </button>
-        </div>
-      )}
     </div>
   );
 };

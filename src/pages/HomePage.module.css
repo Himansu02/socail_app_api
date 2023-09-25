@@ -128,33 +128,48 @@
   width: 100%;
 }
 
-.bottomNavbar.visible{
+.bottomNavbar.visible {
   bottom: 0;
 }
 .bottomNavbar.hidden {
   bottom: -60px;
 }
-.link{
+.link {
   color: black;
 }
 
-
+.test {
+  position: absolute;
+  padding: 20px;
+  height: 750px;
+  width: 750px;
+  margin: 0 auto;
+  overflow: auto;
+}
 
 @media only screen and (max-width: 768px) {
   .navigation {
     display: none;
   }
-  .chatArea{
+  .chatArea {
     display: none;
   }
 
-  .content{
+  .content {
     width: 100%;
     left: 0;
   }
-  .bottomNavbar{
+  .bottomNavbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .test {
+    position: absolute;
+    padding: 20px;
+    aspect-ratio: 1/1;
+    width: 100%;
+    top: 5%;
+    overflow: auto;
   }
 }
