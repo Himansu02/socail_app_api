@@ -96,7 +96,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const socket = io("https://socail-app-api.vercel.app/");
+    const socket = io("https://socail-app-api.vercel.app/",{transports:['polling']});
     dispatch(getCurrentSocket(socket));
   }, []);
 

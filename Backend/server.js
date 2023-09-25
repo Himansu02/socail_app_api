@@ -48,10 +48,9 @@ var server = app.listen(process.env.PORT || 5000, () => {
 
 var io = require('socket.io')(server,{
   cors:{
-    origin:"https://social-app-six-delta.vercel.app/",
+    origin:["https://social-app-six-delta.vercel.app"],
     credentials: true,
-  },
-  rejectUnauthorized: false,
+  }
 });
 
 // To  receive event from client use socket.on and to send event use io.emit(this is forwaded to all users) or io.to(id).emit(this will send to a specific user)
