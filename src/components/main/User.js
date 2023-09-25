@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { reArrangeList, setOpenChart } from "../redux/chatReducer";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
+import Spinner from "../UI/Spinner";
 
 const User = ({ conversationUserId, id }) => {
   // console.log(conversation)
@@ -14,6 +15,7 @@ const User = ({ conversationUserId, id }) => {
   const notificationIds = useSelector((state) => state.chat.notificationIds);
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [count, setCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getNotifications = () => {
     const notification = notificationIds?.find((n) => n.id === id);
@@ -51,6 +53,7 @@ const User = ({ conversationUserId, id }) => {
           `https://socail-app-api.vercel.app/user/${conversationUserId}`
         );
         setConversationUser(res.data);
+        setIsLoading(false)
       } catch (err) {
         console.log(err);
       }
@@ -91,65 +94,81 @@ const User = ({ conversationUserId, id }) => {
   // }, []);
 
   return (
-    <div className={styles.user} onClick={handleClick}>
-      <div className={styles.leftContainer}>
-        <div className={styles.imgContainer}>
-          <img className={styles.img} src={conversationUser?.profile_img} />
-        </div>
-        <div className={styles.text}>
-          <p className={styles.name}>{conversationUser?.fullname}</p>
-          {!notificationMessage &&
-            lastMessage?.text &&
-            lastMessage?.sender === user.id && (
-              <p className={styles.msg}>Sent : {lastMessage?.text}</p>
-            )}
-          {!notificationMessage &&
-            lastMessage?.text &&
-            lastMessage?.sender !== user.id && (
-              <p className={styles.msg}>Received : {lastMessage?.text}</p>
-            )}
-          {!notificationMessage &&
-            lastMessage?.postId &&
-            lastMessage?.sender === user.id && (
-              <p className={styles.msg}>Sent : shared a post</p>
-            )}
-          {!notificationMessage &&
-            lastMessage?.postId &&
-            lastMessage?.sender !== user.id && (
-              <p className={styles.msg}>Received : sent a post</p>
-            )}
-          {notificationMessage &&
-            notificationMessage?.text &&
-            notificationMessage?.sender === user.id && (
-              <p className={styles.notifyMsg}>
-                Sent : {notificationMessage?.text}
-              </p>
-            )}
-          {notificationMessage &&
-            notificationMessage?.text &&
-            notificationMessage?.sender !== user.id && (
-              <p className={styles.notifyMsg}>
-                Received : {notificationMessage?.text}
-              </p>
-            )}
-          {notificationMessage &&
-            notificationMessage?.postId &&
-            notificationMessage?.sender === user.id && (
-              <p className={styles.notifyMsg}>Sent : shared a post</p>
-            )}
-          {notificationMessage &&
-            notificationMessage?.postId &&
-            notificationMessage?.sender !== user.id && (
-              <p className={styles.notifyMsg}>Received : sent a post</p>
-            )}
-        </div>
-      </div>
-      {notificationMessage && (
-        <div className={styles.count}>
-          <span>{count}</span>
+    <>
+      {!isLoading && (
+        <div className={styles.user} onClick={handleClick}>
+          <div className={styles.leftContainer}>
+            <div className={styles.imgContainer}>
+              <img className={styles.img} src={conversationUser?.profile_img} />
+            </div>
+            <div className={styles.text}>
+              <p className={styles.name}>{conversationUser?.fullname}</p>
+              {!notificationMessage &&
+                lastMessage?.text &&
+                lastMessage?.sender === user.id && (
+                  <p className={styles.msg}>Sent : {lastMessage?.text}</p>
+                )}
+              {!notificationMessage &&
+                lastMessage?.text &&
+                lastMessage?.sender !== user.id && (
+                  <p className={styles.msg}>Received : {lastMessage?.text}</p>
+                )}
+              {!notificationMessage &&
+                lastMessage?.postId &&
+                lastMessage?.sender === user.id && (
+                  <p className={styles.msg}>Sent : shared a post</p>
+                )}
+              {!notificationMessage &&
+                lastMessage?.postId &&
+                lastMessage?.sender !== user.id && (
+                  <p className={styles.msg}>Received : sent a post</p>
+                )}
+              {notificationMessage &&
+                notificationMessage?.text &&
+                notificationMessage?.sender === user.id && (
+                  <p className={styles.notifyMsg}>
+                    Sent : {notificationMessage?.text}
+                  </p>
+                )}
+              {notificationMessage &&
+                notificationMessage?.text &&
+                notificationMessage?.sender !== user.id && (
+                  <p className={styles.notifyMsg}>
+                    Received : {notificationMessage?.text}
+                  </p>
+                )}
+              {notificationMessage &&
+                notificationMessage?.postId &&
+                notificationMessage?.sender === user.id && (
+                  <p className={styles.notifyMsg}>Sent : shared a post</p>
+                )}
+              {notificationMessage &&
+                notificationMessage?.postId &&
+                notificationMessage?.sender !== user.id && (
+                  <p className={styles.notifyMsg}>Received : sent a post</p>
+                )}
+            </div>
+          </div>
+          {notificationMessage && (
+            <div className={styles.count}>
+              <span>{count}</span>
+            </div>
+          )}
         </div>
       )}
-    </div>
+      {isLoading && (
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "50px",
+          }}
+        >
+          <Spinner />
+        </div>
+      )}
+    </>
   );
 };
 

@@ -4,12 +4,14 @@ import styles from "./Comment.module.css";
 import { Delete, Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { useUser } from "@clerk/clerk-react";
+import Spinner from "../UI/Spinner";
 
 const Comment = ({ comment, postId, postUser, deleteHandler }) => {
   const [user, setUser] = useState(null);
   const [liked, setLiked] = useState(false);
   const [commentLikes, setCommentLikes] = useState(comment.likes.length);
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading,setIsLoading]=useState(true)
   console.log(postUser);
 
   const { user: currentUser } = useUser();
@@ -22,6 +24,7 @@ const Comment = ({ comment, postId, postUser, deleteHandler }) => {
         );
         setUser(res.data);
         setLiked(comment.likes.includes(currentUser.id));
+        setIsLoading(false)
       } catch (err) {
         console.log(err);
       }
@@ -129,51 +132,68 @@ const Comment = ({ comment, postId, postUser, deleteHandler }) => {
   };
 
   return (
-    <div
-      className={styles.container}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      id={comment?._id}
-    >
-      {(comment.senderId === currentUser.id || postUser === currentUser.id) &&
-        isHovered && (
-          <div className={styles.deleteIcon} onClick={handleDelete}>
-            <Delete />
-          </div>
-        )}
-      <div className={styles.post}>
-        <div>
-          <div className={styles.postHeader}>
-            <img
-              className={styles.profilePicture}
-              src={user?.profile_img}
-              alt="User Profile"
-            />
-            <div className={styles.nameContainer}>
-              <div className={styles.userInfo}>
-                <p className={styles.displayName}>{user?.fullname}</p>
-                <p className={styles.username}>@{user?.username}</p>
+    <>
+      {!isLoading && (
+        <div
+          className={styles.container}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          id={comment?._id}
+        >
+          {(comment.senderId === currentUser.id ||
+            postUser === currentUser.id) &&
+            isHovered && (
+              <div className={styles.deleteIcon} onClick={handleDelete}>
+                <Delete />
               </div>
-              <div className={styles.timestamp}>{timestamp}</div>
+            )}
+          <div className={styles.post}>
+            <div>
+              <div className={styles.postHeader}>
+                <img
+                  className={styles.profilePicture}
+                  src={user?.profile_img}
+                  alt="User Profile"
+                />
+                <div className={styles.nameContainer}>
+                  <div className={styles.userInfo}>
+                    <p className={styles.displayName}>{user?.fullname}</p>
+                    <p className={styles.username}>@{user?.username}</p>
+                  </div>
+                  <div className={styles.timestamp}>{timestamp}</div>
+                </div>
+              </div>
+              <div className={styles.messageContainer}>
+                <div
+                  className={styles.postContent}
+                  dangerouslySetInnerHTML={{ __html: comment?.text }}
+                />
+              </div>
+            </div>
+            <div
+              className={`${styles.likeBox} ${liked && styles.liked}`}
+              onClick={handleLike}
+            >
+              {!liked && <FavoriteBorder />}
+              {liked && <Favorite />}
+              {commentLikes > 0 && <span>{commentLikes}</span>}
             </div>
           </div>
-          <div className={styles.messageContainer}>
-            <div
-              className={styles.postContent}
-              dangerouslySetInnerHTML={{ __html: comment?.text }}
-            />
-          </div>
         </div>
+      )}
+      {isLoading && (
         <div
-          className={`${styles.likeBox} ${liked && styles.liked}`}
-          onClick={handleLike}
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            padding: "20px",
+          }}
         >
-          {!liked && <FavoriteBorder />}
-          {liked && <Favorite />}
-          {commentLikes > 0 && <span>{commentLikes}</span>}
+          <Spinner />
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

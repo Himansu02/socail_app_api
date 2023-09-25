@@ -36,11 +36,15 @@ const ChatContainer = () => {
   useEffect(() => {
     if (conversations.length === 0) {
       const getConversationList = async () => {
-        const res = await axios.get(
-          `https://socail-app-api.vercel.app/conversation/${user.id}`
-        );
-        dispatch(getList(res.data));
-        setIsLoading(false);
+        try {
+          const res = await axios.get(
+            `https://socail-app-api.vercel.app/conversation/${user.id}`
+          );
+          dispatch(getList(res.data));
+          setIsLoading(false);
+        } catch (err) {
+          console.log(err);
+        }
       };
       getConversationList();
     } else {

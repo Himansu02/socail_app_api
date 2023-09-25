@@ -3,6 +3,7 @@ import styles from "./NotificationContent.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Delete } from "@mui/icons-material";
+import Spinner from "../UI/Spinner";
 
 const keyValueMap = new Map();
 keyValueMap.set(1, "liked your post.");
@@ -12,6 +13,7 @@ keyValueMap.set(3, "liked your comment in a post");
 const NotificationContent = ({ notification, deleteHandler }) => {
   const [sender, setSender] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getSender = async () => {
@@ -19,6 +21,7 @@ const NotificationContent = ({ notification, deleteHandler }) => {
         `https://socail-app-api.vercel.app/user/${notification.senderId}`
       );
       setSender(res.data);
+      setIsLoading(false)
     };
     getSender();
   }, [notification.senderId]);
@@ -79,68 +82,88 @@ const NotificationContent = ({ notification, deleteHandler }) => {
   };
 
   return (
-    <div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className={styles.container}
-    >
-      {isHovered && (
+    <>
+      {!isLoading && (
         <div
-          style={{ marginRight: "5px", cursor: "pointer" }}
-          onClick={handleMessageDelete}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={styles.container}
         >
-          <Delete />
+          {isHovered && (
+            <div
+              style={{ marginRight: "5px", cursor: "pointer" }}
+              onClick={handleMessageDelete}
+            >
+              <Delete />
+            </div>
+          )}
+          <div style={{ width: "100%" }}>
+            <Link
+              to={`/post/${notification.postId}/${
+                (notification.type === 2 || notification.type === 3) &&
+                notification.commentId
+              }`}
+              className={styles.link}
+            >
+              <div className={styles.notification}>
+                <div className={styles.leftContainer}>
+                  <div className={styles.imgContainer}>
+                    <img
+                      className={styles.img}
+                      src={sender?.profile_img}
+                      alt=""
+                    />
+                  </div>
+
+                  <div className={styles.message}>
+                    {notification.type === 1 && (
+                      <p style={{ wordBreak: "break-word" }}>
+                        {sender?.username +
+                          " " +
+                          keyValueMap.get(notification.type)}
+                      </p>
+                    )}
+                    {notification.type === 2 && (
+                      <div
+                        style={{ wordBreak: "break-word" }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            sender?.username +
+                            " " +
+                            keyValueMap.get(notification.type) +
+                            " : " +
+                            notification?.text,
+                        }}
+                      />
+                    )}
+                    {notification.type === 3 && (
+                      <p style={{ wordBreak: "break-word" }}>
+                        {sender?.username +
+                          " " +
+                          keyValueMap.get(notification.type)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className={styles.timestamp}>{timestamp}</div>
+              </div>
+            </Link>
+          </div>
         </div>
       )}
-      <div style={{ width: "100%" }}>
-        <Link
-          to={`/post/${notification.postId}/${
-            (notification.type === 2 || notification.type === 3) &&
-            notification.commentId
-          }`}
-          className={styles.link}
+      {isLoading && (
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            padding:"20px"
+          }}
         >
-          <div className={styles.notification}>
-            <div className={styles.leftContainer}>
-              <div className={styles.imgContainer}>
-                <img className={styles.img} src={sender?.profile_img} alt="" />
-              </div>
-
-              <div className={styles.message}>
-                {notification.type === 1 && (
-                  <p style={{ wordBreak: "break-word" }}>
-                    {sender?.username +
-                      " " +
-                      keyValueMap.get(notification.type)}
-                  </p>
-                )}
-                {notification.type === 2 && (
-                  <div
-                    style={{ wordBreak: "break-word" }}
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        sender?.username +
-                        " " +
-                        keyValueMap.get(notification.type) +
-                        " : " +
-                        notification?.text,
-                    }}
-                  />
-                )}
-                {notification.type === 3 && (
-                  <p style={{ wordBreak: "break-word" }}>
-                    {sender?.username +
-                      " " +
-                      keyValueMap.get(notification.type)}
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className={styles.timestamp}>{timestamp}</div>
-          </div>
-        </Link>
-      </div>
-    </div>
+          <Spinner />
+        </div>
+      )}
+    </>
   );
 };
 

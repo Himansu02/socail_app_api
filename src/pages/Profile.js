@@ -73,21 +73,33 @@ const Profile = () => {
   };
 
   const { userId } = useParams();
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const res = await axios.get(
-          `https://socail-app-api.vercel.app/user/${userId}`
-        );
 
-        setProfileUser(res.data);
-        setMedia(res.data.media);
-        setProfileLoading(false);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getUserData();
+  useEffect(() => {
+    if (user.id !== userId) {
+      const getUserData = async () => {
+        try {
+          const res = await axios.get(
+            `https://socail-app-api.vercel.app/user/${userId}`
+          );
+
+          setProfileUser(res.data);
+          setMedia(res.data.media);
+          setProfileLoading(false);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getUserData();
+    } else {
+      setProfileUser(reduxUser);
+      setProfileLoading(false);
+      setMedia(reduxUser.media);
+    }
+  }, [userId, reduxUser]);
+
+  useEffect(() => {
+    setPage(1);
+    setUserPosts([]);
   }, [userId]);
 
   useEffect(() => {
@@ -107,7 +119,7 @@ const Profile = () => {
       }
     };
     getTimelinePost();
-  }, [page]);
+  }, [page, userId]);
 
   const handleStartChat = async () => {
     try {
@@ -160,162 +172,182 @@ const Profile = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div
-        className={styles.coverImageContainer}
-        onClick={() => {
-          openModal(reduxUser?.cover_img);
-        }}
-      >
-        <img
-          className={styles.coverImage}
-          src={
-            reduxUser?.cover_img
-              ? reduxUser?.cover_img
-              : "https://dummyimage.com/1920x1080/aaa/ffffff.png&text=No+Photo"
-          }
-          alt="Cover-img"
-        />
-      </div>
-      <div className={styles.mainSection}>
-        <div className={styles.profileHeader}>
+    <>
+      {!profileLoading && (
+        <div className={styles.container}>
           <div
-            className={styles.proImageContainer}
+            className={styles.coverImageContainer}
             onClick={() => {
-              openModal(profileUser?.profile_img);
+              openModal(reduxUser?.cover_img);
             }}
           >
             <img
-              className={styles.proImage}
-              src={profileUser?.profile_img}
-              alt="Profile-img"
+              className={styles.coverImage}
+              src={
+                profileUser?.cover_img
+                  ? profileUser?.cover_img
+                  : "https://dummyimage.com/1920x1080/aaa/ffffff.png&text=No+Photo"
+              }
+              alt="Cover-img"
             />
           </div>
-          <div className={styles.profileInfoContainer}>
-            <div className={styles.editSection}>
-              <p className={styles.displayName}>{profileUser?.fullname}</p>
-              {user.id === userId && (
-                <button
-                  className={styles.button}
-                  onClick={handleOpenEditProfile}
-                >
-                  Edit Profile
-                </button>
-              )}
-              {user.id !== userId && (
-                <button className={styles.button} onClick={handleStartChat}>
-                  Start a Chat
-                </button>
-              )}
-            </div>
-            <p className={styles.userName}>{"@" + profileUser?.username}</p>
-            <div className={styles.personalInfoContainer}>
-              {reduxUser?.bio && <p>{reduxUser?.bio}</p>}
-              {reduxUser?.dob && (
-                <div className={styles.iconContainer}>
-                  <Cake /> <span>{reduxUser?.dob}</span>
-                </div>
-              )}
-              {joinDate?.trim().length > 0 && (
-                <div className={styles.iconContainer}>
-                  <CalendarMonth /> <span>Joined in {joinDate}</span>
-                </div>
-              )}
-              {reduxUser?.location && (
-                <div className={styles.iconContainer}>
-                  <Place /> <span>{reduxUser?.location}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className={styles.mainBottomSection}>
-          <div className={styles.tabs}>
-            <button
-              className={`${styles.tab} ${
-                selectedSection === "post" ? styles.activeTab : ""
-              }`}
-              onClick={() => setSelectedSection("post")}
-            >
-              Post
-            </button>
-            <button
-              className={`${styles.tab} ${
-                selectedSection === "media" ? styles.activeTab : ""
-              }`}
-              onClick={() => setSelectedSection("media")}
-            >
-              Media
-            </button>
-          </div>
-          <div className={styles.contentContainer}>
-            {selectedSection === "post" && (
-              <div>
-                <InfiniteScroll
-                  dataLength={userPosts.length}
-                  next={loadMore}
-                  hasMore={hasMore}
-                  loader={() => setIsLoading(true)}
-                >
-                  {userPosts?.map((post, index) => (
-                    <QuotePost post={post} key={index} />
-                  ))}
-                </InfiniteScroll>
-                {userPosts.length === 0 && (
-                  <div className={styles.noPostContainer}>
-                    <p>No Posts.</p>
-                  </div>
-                )}
-              </div>
-            )}
-            {selectedSection === "media" && (
-              <div>
-                {media.length > 0 && <Media images={media} />}
-                {media.length === 0 && (
-                  <div className={styles.noMediaContainer}>
-                    <p>No Media.</p>
-                  </div>
-                )}
-              </div>
-            )}
-            {isLoading && (
+          <div className={styles.mainSection}>
+            <div className={styles.profileHeader}>
               <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "50px",
+                className={styles.proImageContainer}
+                onClick={() => {
+                  openModal(profileUser?.profile_img);
                 }}
               >
-                <Spinner />
+                <img
+                  className={styles.proImage}
+                  src={profileUser?.profile_img}
+                  alt="Profile-img"
+                />
               </div>
-            )}
-          </div>
-        </div>
-      </div>
-      <Modal
-        onClose={closeModal}
-        open={selectedImageUrl || openEditProfile}
-        style={{
-          position: "absolute",
-          boxShadow: "2px solid black",
-          height: 700,
-          width: 650,
-          left: "30%",
-          top: "5%",
-          overflow: "auto",
-        }}
-      >
-        <div className={styles.modalContainer}>
-          {selectedImageUrl && (
-            <div className={styles.selectedImageContainer} onClick={closeModal}>
-              <img src={selectedImageUrl} alt="Selected" />
+              <div className={styles.profileInfoContainer}>
+                <div className={styles.editSection}>
+                  <p className={styles.displayName}>{profileUser?.fullname}</p>
+                  {user.id === userId && (
+                    <button
+                      className={styles.button}
+                      onClick={handleOpenEditProfile}
+                    >
+                      Edit Profile
+                    </button>
+                  )}
+                  {user.id !== userId && (
+                    <button className={styles.button} onClick={handleStartChat}>
+                      Start a Chat
+                    </button>
+                  )}
+                </div>
+                <p className={styles.userName}>{"@" + profileUser?.username}</p>
+                <div className={styles.personalInfoContainer}>
+                  {profileUser?.bio && <p>{profileUser?.bio}</p>}
+                  {profileUser?.dob && (
+                    <div className={styles.iconContainer}>
+                      <Cake /> <span>{profileUser?.dob}</span>
+                    </div>
+                  )}
+                  {joinDate?.trim().length > 0 && (
+                    <div className={styles.iconContainer}>
+                      <CalendarMonth /> <span>Joined in {joinDate}</span>
+                    </div>
+                  )}
+                  {profileUser?.location && (
+                    <div className={styles.iconContainer}>
+                      <Place /> <span>{profileUser?.location}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-          )}
-          {openEditProfile && <EditProfile user={reduxUser} />}
+            <div className={styles.mainBottomSection}>
+              <div className={styles.tabs}>
+                <button
+                  className={`${styles.tab} ${
+                    selectedSection === "post" ? styles.activeTab : ""
+                  }`}
+                  onClick={() => setSelectedSection("post")}
+                >
+                  Post
+                </button>
+                <button
+                  className={`${styles.tab} ${
+                    selectedSection === "media" ? styles.activeTab : ""
+                  }`}
+                  onClick={() => setSelectedSection("media")}
+                >
+                  Media
+                </button>
+              </div>
+              <div className={styles.contentContainer}>
+                {selectedSection === "post" && (
+                  <div>
+                    <InfiniteScroll
+                      dataLength={userPosts.length}
+                      next={loadMore}
+                      hasMore={hasMore}
+                      loader={() => setIsLoading(true)}
+                    >
+                      {userPosts?.map((post, index) => (
+                        <QuotePost post={post} key={index} />
+                      ))}
+                    </InfiniteScroll>
+                    {userPosts.length === 0 && (
+                      <div className={styles.noPostContainer}>
+                        <p>No Posts.</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {selectedSection === "media" && (
+                  <div>
+                    {media.length > 0 && <Media images={media} />}
+                    {media.length === 0 && (
+                      <div className={styles.noMediaContainer}>
+                        <p>No Media.</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {isLoading && (
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "50px",
+                    }}
+                  >
+                    <Spinner />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <Modal
+            onClose={closeModal}
+            open={selectedImageUrl || openEditProfile}
+            style={{
+              position: "absolute",
+              boxShadow: "2px solid black",
+              height: 700,
+              width: 650,
+              left: "30%",
+              top: "5%",
+              overflow: "auto",
+            }}
+          >
+            <div className={styles.modalContainer}>
+              {selectedImageUrl && (
+                <div
+                  className={styles.selectedImageContainer}
+                  onClick={closeModal}
+                >
+                  <img src={selectedImageUrl} alt="Selected" />
+                </div>
+              )}
+              {openEditProfile && <EditProfile user={reduxUser} />}
+            </div>
+          </Modal>
         </div>
-      </Modal>
-    </div>
+      )}
+      {profileLoading && (
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            padding: "50px",
+            height:"100vh"
+          }}
+        >
+          <Spinner />
+        </div>
+      )}
+    </>
   );
 };
 

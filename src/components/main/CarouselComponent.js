@@ -1,7 +1,12 @@
 // Carousel.js
 import React, { useEffect, useState } from "react";
 import styles from "./CarouselComponent.module.css";
-import { ArrowLeftOutlined, ArrowRightOutlined, Delete } from "@mui/icons-material";
+import {
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  Delete,
+} from "@mui/icons-material";
+import Spinner from "../UI/Spinner";
 
 const CarouselComponent = ({
   size,
@@ -13,6 +18,7 @@ const CarouselComponent = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImages, setCurrentImages] = useState([...images]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setCurrentImages([...images]);
@@ -35,6 +41,10 @@ const CarouselComponent = ({
 
   const goToNextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % currentImages.length);
+  };
+
+  const handleImageLoad = () => {
+    setIsLoading(false);
   };
 
   return (
@@ -72,7 +82,25 @@ const CarouselComponent = ({
                 height: height ? height : "752px",
               }}
             >
-              <img src={image} alt={`Image ${index + 1}`} />
+              {isLoading && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <Spinner />
+                </div>
+              )}
+              <img
+                src={image}
+                alt={`Image ${index + 1}`}
+                onLoad={handleImageLoad}
+                style={{ display: isLoading ? "none" : "block" }}
+              />
             </div>
           ))}
         </div>
