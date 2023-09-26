@@ -45,8 +45,8 @@ mongoose
 
   const io = new Server(httpServer, { 
     cors:{
-      origin:"https://social-app-six-delta.vercel.app",
-      credentials:true
+      origin:["http://localhost:3000","https://social-app-six-delta.vercel.app"],
+      methods:['GET','POST','PATCH','DELETE','PUT']
     }
    });
 
