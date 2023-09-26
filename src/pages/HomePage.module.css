@@ -147,12 +147,26 @@
   overflow: auto;
 }
 
+.responsiveSideBar{
+  display: none;
+}
+
 @media only screen and (max-width: 768px) {
   .navigation {
     display: none;
   }
   .chatArea {
     display: none;
+  }
+
+  .responsiveSideBar{
+    display: flex;
+    position: absolute;
+    z-index: 1000;
+    top:25px;
+    right: 10px;
+    justify-content: space-between;
+    width: 80px;
   }
 
   .content {
@@ -171,5 +185,8 @@
     width: 100%;
     top: 5%;
     overflow: auto;
+  }
+  .container{
+    flex-direction: column;
   }
 }

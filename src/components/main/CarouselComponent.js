@@ -27,15 +27,12 @@ const CarouselComponent = ({
   }, [images]);
 
   const handleDelete = () => {
-    setCurrentImages((prev) => {
-      return prev.filter((image, idx) => {
-        return idx !== currentIndex;
-      });
-    });
     deleteHandler(currentIndex)
+    setCurrentIndex((prev)=>prev%(currentImages.length-1))
   };
 
   const goToPrevSlide = () => {
+    console.log("prev")
     setCurrentIndex(
       (prevIndex) =>
         (prevIndex - 1 + currentImages.length) % currentImages.length
@@ -43,6 +40,7 @@ const CarouselComponent = ({
   };
 
   const goToNextSlide = () => {
+    console.log("next")
     setCurrentIndex((prevIndex) => (prevIndex + 1) % currentImages.length);
   };
 
@@ -95,7 +93,7 @@ const CarouselComponent = ({
                 </div>
               )}
               <img
-                src={image}
+                src={pel?URL.createObjectURL(image):image}
                 alt={`Image ${index + 1}`}
                 onLoad={handleImageLoad}
                 style={{ display: isLoading ? "none" : "block" }}

@@ -5,6 +5,7 @@ import styles from "./SharedConversation.module.css";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import Spinner from "../UI/Spinner";
+import { useNavigate } from "react-router-dom";
 
 const SharedConversation = ({ conversationUserId, id, postId }) => {
   const [conversationUser, setConversationUser] = useState(null);
@@ -14,6 +15,8 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
   const openChat = useSelector((state) => state.chat.openChat);
   const conversationId = useSelector((state) => state.chat.conversationId);
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate()
 
   const handleClick = async () => {
     const data = {
@@ -42,6 +45,10 @@ const SharedConversation = ({ conversationUserId, id, postId }) => {
             conversationUser: conversationUser,
           })
         );
+        if(window.innerWidth<=768)
+        {
+          navigate(`/chatBox/${id}`)
+        }
       } else if (openChat && id === conversationId) {
         dispatch(getSharePost(res.data));
       }

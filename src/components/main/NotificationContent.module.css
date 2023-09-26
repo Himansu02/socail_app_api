@@ -22,6 +22,7 @@
     flex: 7;
     display: flex;
     align-items: center;
+    padding: 5px 0px;
   }
 
   .link{
@@ -49,4 +50,16 @@
       font-size: 12px;
       color: #888;
       margin-bottom: 12px;
+}
+
+@media only screen and (max-width: 768px) {
+  .imgContainer {
+    width: 50px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
+    margin-left: 10px;
+    
+  }
 }

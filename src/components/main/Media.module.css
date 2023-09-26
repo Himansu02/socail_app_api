@@ -49,5 +49,17 @@
   }
 
   @media only screen and (max-width: 768px) {
-
+    .test {
+      position: absolute;
+      padding: 20px;
+      aspect-ratio: 1/1;
+      width: 100%;
+      top: 5%;
+      overflow: auto;
+    }
+    .selectedImageContainer{
+      padding: 10px;
+      width: 100%;
+      height: 450px;
+    }
   }

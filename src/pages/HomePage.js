@@ -196,7 +196,7 @@ const HomePage = () => {
           {openChat && <Conversation />}
         </Suspense>
       </div>
-      <div className={`${styles.bottomNavbar} ${visible ? styles.visible : styles.hidden}`}>
+      <div className={`${styles.bottomNavbar} ${visible && !openChat ? styles.visible : styles.hidden}`}>
         <UserButton />
         {navigationLinks.map((link, index) => (
           <div key={index}>

@@ -35,25 +35,25 @@ const NotificationContent = ({ notification, deleteHandler }) => {
     const seconds = Math.floor(timeDifference / 1000);
 
     if (seconds < 60) {
-      timestamp = "just now";
+      timestamp = "now";
     } else if (seconds < 3600) {
       const minutes = Math.floor(seconds / 60);
-      timestamp = `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+      timestamp = `${minutes} min${minutes === 1 ? "" : "s"} `;
     } else if (seconds < 86400) {
       const hours = Math.floor(seconds / 3600);
-      timestamp = `${hours} hour${hours === 1 ? "" : "s"} ago`;
+      timestamp = `${hours} hour${hours === 1 ? "" : "s"} `;
     } else if (seconds < 604800) {
       const days = Math.floor(seconds / 86400);
-      timestamp = `${days} day${days === 1 ? "" : "s"} ago`;
+      timestamp = `${days} day${days === 1 ? "" : "s"} `;
     } else if (seconds < 2419200) {
       const weeks = Math.floor(seconds / 604800);
-      timestamp = `${weeks} week${weeks === 1 ? "" : "s"} ago`;
+      timestamp = `${weeks} week${weeks === 1 ? "" : "s"} `;
     } else if (seconds < 29030400) {
       const months = Math.floor(seconds / 2419200);
-      timestamp = `${months} month${months === 1 ? "" : "s"} ago`;
+      timestamp = `${months} month${months === 1 ? "" : "s"} `;
     } else {
       const years = Math.floor(seconds / 29030400);
-      timestamp = `${years} year${years === 1 ? "" : "s"} ago`;
+      timestamp = `${years} year${years === 1 ? "" : "s"} `;
     }
   };
 

@@ -97,7 +97,6 @@ const Profile = () => {
     }
   }, [userId, reduxUser]);
 
-
   useEffect(() => {
     const getTimelinePost = async () => {
       try {
@@ -306,26 +305,30 @@ const Profile = () => {
           <Modal
             onClose={closeModal}
             open={selectedImageUrl || openEditProfile}
-            style={{
-              position: "absolute",
-              boxShadow: "2px solid black",
-              height: window.innerWidth <= 768 ? 500 : 700,
-              width: window.innerWidth <= 768 ? 430 : 650,
-              left: `${window.innerWidth <= 768 ? "20%" : "30%"}`,
-              top: "5%",
-              overflow: "auto",
-            }}
+            className={styles.test}
           >
             <div className={styles.modalContainer}>
               {selectedImageUrl && (
                 <div
-                  className={styles.selectedImageContainer}
-                  onClick={closeModal}
+                  style={{
+                    width: "100%",
+                    height: "90vh",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  <img src={selectedImageUrl} alt="Selected" />
+                  <div
+                    className={styles.selectedImageContainer}
+                    onClick={closeModal}
+                  >
+                    <img src={selectedImageUrl} alt="Selected" />
+                  </div>
                 </div>
               )}
-              {openEditProfile && <EditProfile user={reduxUser} />}
+              {openEditProfile && (
+                <EditProfile user={reduxUser} handleClose={closeModal} />
+              )}
             </div>
           </Modal>
         </div>
@@ -337,7 +340,7 @@ const Profile = () => {
             display: "flex",
             justifyContent: "center",
             padding: "50px",
-            height:"100vh"
+            height: "100vh",
           }}
         >
           <Spinner />

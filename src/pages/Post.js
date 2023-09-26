@@ -524,15 +524,7 @@ const Post = () => {
       <Modal
         onClose={handleClose}
         open={open}
-        style={{
-          position: "fixed",
-          boxShadow: "2px solid black",
-          height: window.innerWidth <= 768 ? 500 : 700,
-          width: window.innerWidth <= 768 ? 430 : 650,
-          left: `${window.innerWidth <= 768 ? "20%" : "30%"}`,
-          top: "5%",
-          overflow: "auto",
-        }}
+        className={styles.test}
       >
         
           <UserLikeModal array={postLikes} />

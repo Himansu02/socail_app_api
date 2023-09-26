@@ -144,7 +144,8 @@
 
   .selectedImageContainer img{
     width: 100%;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
   }
 
   .tab {
@@ -172,4 +173,33 @@
   .link{
     text-decoration: none;
     color: black;
+  }
+
+  .test {
+    position: absolute;
+    padding: 20px;
+    height: 750px;
+    width: 750px;
+    margin: 0 auto;
+    overflow: auto;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .test {
+      position: absolute;
+      padding: 20px;
+      aspect-ratio: 1/1;
+      width: 100%;
+      top: 5%;
+      overflow: auto;
+    }
+    .selectedImageContainer{
+      width: 100%;
+      height: 400px;
+    }
+    .button{
+      width: 70px;
+      font-size: 12px;
+      padding: 5px;
+    }
   }

@@ -40,25 +40,22 @@ const NewPost = ({ closeModal }) => {
     }
   };
   const [selectedImages, setSelectedImages] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+
   const inputRef = useRef(null);
 
   const handleImageChange = (e) => {
     const files = e.target.files;
-    const selectedImageFiles = Array.from(files);
-    const selectedImageArray=selectedImageFiles.map((file)=>URL.createObjectURL(file))
+    const selectedImageArray = Array.from(files);
     setSelectedImages((prev) => {
       return [...prev, ...selectedImageArray];
     });
   };
 
   const handleRemoveImage = (index) => {
+    console.log(index);
     const updatedImages = selectedImages.filter((_, i) => i !== index);
+    console.log(updatedImages);
     setSelectedImages(updatedImages);
-
-    if (currentIndex === index && currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
   };
 
   const handleClick = async () => {
@@ -74,6 +71,7 @@ const NewPost = ({ closeModal }) => {
       setLoad(true);
 
       if (selectedImages.length > 0) {
+        console.log("working")
         const totalImages = selectedImages.length;
         let overallProgress = 0;
         let uploadedFiles = 0;
@@ -174,9 +172,12 @@ const NewPost = ({ closeModal }) => {
         <div className={styles.imgContainer}>
           <img className={styles.img} src={user.imageUrl} alt="" />
         </div>
-        <div className={styles.userInfo}>
-          <p className={styles.displayName}>{user.fullName}</p>
-          <p className={styles.username}>@{user.username}</p>
+        <div style={{display:"flex",justifyContent:"space-between",width:"100%"}}>
+          <div className={styles.userInfo}>
+            <p className={styles.displayName}>{user.fullName}</p>
+            <p className={styles.username}>@{user.username}</p>
+          </div>
+          <Close onClick={()=>closeModal()}/>
         </div>
       </div>
       <div className={styles.inputArea}>
@@ -188,7 +189,13 @@ const NewPost = ({ closeModal }) => {
         />
       </div>
       <div className={styles.selectedImagesContainer}>
-        {selectedImages.length>0 && <CarouselComponent images={selectedImages} pel={true} deleteHandler={handleRemoveImage}/>}
+        {selectedImages.length > 0 && (
+          <CarouselComponent
+            images={selectedImages}
+            pel={true}
+            deleteHandler={handleRemoveImage}
+          />
+        )}
       </div>
       <div className={styles.postButton}>
         <div className={styles.mediaContainer}>
@@ -215,10 +222,7 @@ const NewPost = ({ closeModal }) => {
           </button>
         </div>
       </div>
-      <Modal
-        open={load}
-        className={styles.test}
-      >
+      <Modal open={load} className={styles.test}>
         <Loader progress={uploadProgress} />
       </Modal>
     </div>

@@ -147,7 +147,8 @@
 
   .selectedImagesContainer{
     width: 100%;
-    padding: 20px;
+    padding: 10px 0px;
+    margin-bottom: 5px;
   }
 
   .test {
@@ -167,5 +168,8 @@
       width: 100%;
       top: 5%;
       overflow: auto;
+    }
+    .inputArea textarea{
+      font-size: 14px;
     }
   }

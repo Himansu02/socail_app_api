@@ -100,7 +100,7 @@ const Comment = ({ comment, postId, postUser, deleteHandler }) => {
       timestamp = "just now";
     } else if (seconds < 3600) {
       const minutes = Math.floor(seconds / 60);
-      timestamp = `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+      timestamp = `${minutes} min${minutes === 1 ? "" : "s"} ago`;
     } else if (seconds < 86400) {
       const hours = Math.floor(seconds / 3600);
       timestamp = `${hours} hour${hours === 1 ? "" : "s"} ago`;
@@ -112,7 +112,7 @@ const Comment = ({ comment, postId, postUser, deleteHandler }) => {
       timestamp = `${weeks} week${weeks === 1 ? "" : "s"} ago`;
     } else if (seconds < 29030400) {
       const months = Math.floor(seconds / 2419200);
-      timestamp = `${months} month${months === 1 ? "" : "s"} ago`;
+      timestamp = `${months} mon${months === 1 ? "" : "s"} ago`;
     } else {
       const years = Math.floor(seconds / 29030400);
       timestamp = `${years} year${years === 1 ? "" : "s"} ago`;

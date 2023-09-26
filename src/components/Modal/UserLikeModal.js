@@ -7,7 +7,6 @@ import UserLikeModalElement from "./UserLikeModalElement";
 
 const UserLikeModal = ({ array }) => {
   console.log(array)
-  const imaginaryArray = array;
   const [filteredArray, setFilteredArray] = useState([...array]);
 
   const handleChange = (e) => {
@@ -16,7 +15,7 @@ const UserLikeModal = ({ array }) => {
       return;
     }
     setFilteredArray(() => {
-      return imaginaryArray.filter((user) => {
+      return array.filter((user) => {
         return user.username.startsWith(e.target.value);
       });
     });
@@ -26,7 +25,7 @@ const UserLikeModal = ({ array }) => {
     <div className={styles.container}>
       <div className={styles.inputContainer}>
         <Search fontSize="large" />
-        <input placeholder="Search" onChange={handleChange} />
+        <input placeholder="Search"  />
       </div>
       <div className={styles.resultContainer}>
         {filteredArray.map((ele, idx) => {

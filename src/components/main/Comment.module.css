@@ -86,3 +86,9 @@
       color: #888;
       margin-bottom: 12px;
 }
+
+@media only screen and (max-width: 768px) {
+  .post{
+    padding: 20px 0px;
+  }
+}

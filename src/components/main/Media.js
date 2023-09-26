@@ -31,7 +31,7 @@ const Media = ({ images }) => {
           );
         })}
       </div>
-      <Modal open={selectedImageUrl !== null} onClose={closeModal}>
+      <Modal open={selectedImageUrl !== null} onClose={closeModal} className={styles.test}>
         <div className={styles.modalContainer} onClick={closeModal}>
           <div className={styles.selectedImageContainer}>
             <img src={selectedImageUrl} alt="Selected" />

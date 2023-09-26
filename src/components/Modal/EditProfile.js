@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./EditProfile.module.css";
-import { AddAPhoto } from "@mui/icons-material";
+import { AddAPhoto, Close } from "@mui/icons-material";
 import { app } from "../../Firebase";
 import {
   getStorage,
@@ -14,7 +14,7 @@ import Loader from "../UI/Loader";
 import { useDispatch } from "react-redux";
 import { updateCurrentUser } from "../redux/userReducer";
 
-const EditProfile = ({ user }) => {
+const EditProfile = ({ user,handleClose }) => {
   // console.log(user)
   const [uploadProgress, setUploadProgress] = useState(0);
   const [load, setLoad] = useState(false);
@@ -185,7 +185,11 @@ const EditProfile = ({ user }) => {
 
   return (
     <div className={styles.container}>
-      <h1>Edit Profile</h1>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <h1>Edit Profile</h1>
+        <Close onClick={()=>handleClose()}/>
+      </div>
+
       <div className={styles.imageInputContainer}>
         <div
           className={styles.imageContainer}
